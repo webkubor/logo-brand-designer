@@ -4,11 +4,28 @@
 
 ## 安装
 
-克隆到用户级 skill 目录，仓库根目录即 skill 入口：
+先克隆本仓库，再从仓库根目录运行安装脚本（默认软链，改源码即时生效）：
+
+```bash
+git clone https://github.com/webkubor/logo-brand-designer.git
+cd logo-brand-designer
+./install.sh
+```
+
+脚本会自动识别本机已存在的运行时目录（Claude Code / Codex / ~/.agents / Gemini / DSH / Magpie / Hermes）。
+常用选项：`--list` 只看不改、`--target claude` 指定单个运行时、`--copy` 改用拷贝、`--uninstall` 卸载。
+
+也可以用生态标准工具选择支持的 Agent 安装：
+
+```bash
+npx skills add webkubor/logo-brand-designer
+```
+
+手动安装则是把仓库根目录挂到用户级 skill 目录：
 
 ```bash
 mkdir -p ~/.agents/skills
-git clone https://github.com/webkubor/logo-brand-designer.git ~/.agents/skills/logo-brand-designer
+git clone git@github.com:webkubor/logo-brand-designer.git ~/.agents/skills/logo-brand-designer
 ```
 
 安装后在支持该目录的 agent 中重新加载 skills。若目标目录已有文件，先比较再更新；ZCode 的 `~/.zcode/skills/` 同名副本优先级更高，需要一并核对。
