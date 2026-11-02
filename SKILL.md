@@ -1,6 +1,12 @@
 ---
 name: logo-brand-designer
-description: 为项目设计或完善品牌标识，交付 design token、理念、透明底 1:1 SVG、离线评审页与真实截图。用于做 logo、重设计、沿用既有 token、主题适配、品牌色核对、logo 验收及保留可复用评审流程。优先遵循用户输入，核实来源，实际渲染深浅背景的 32px 版本。
+description: "为项目设计或完善品牌标识，交付 design token、理念、透明底 1:1 SVG、离线评审页与真实截图。用于做 logo、重设计、沿用既有 token、主题适配、品牌色核对、logo 验收及保留可复用评审流程。优先遵循用户输入，核实来源，实际渲染深浅背景的 32px 版本。触发词: 做 logo、设计 logo、重设计、品牌标识、brand identity、design token、配色核对、logo 验收、评审页。"
+version: 0.1.0
+license: MIT
+author: webkubor
+category: design
+platforms: [linux, macos]
+url: https://github.com/webkubor/logo-brand-designer
 ---
 
 # Logo 品牌设计师
