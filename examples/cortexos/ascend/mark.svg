@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="CortexOS 标志"><defs>
+<linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+<linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0EA5E9"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+<linearGradient id="gHot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+<linearGradient id="gV" x1="0" y1="20" x2="0" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+<clipPath id="cPar"><path d="M70 20 H130 L100 180 H40 Z"/></clipPath>
+<clipPath id="cCirc"><circle cx="100" cy="100" r="80"/></clipPath>
+</defs><rect x="14" y="128" width="46" height="46" rx="4" fill="url(#gB)"/><rect x="72" y="100" width="46" height="46" rx="4" fill="url(#gA)"/><rect x="132" y="38" width="46" height="46" rx="4" fill="url(#gHot)" transform="rotate(45 155 61)"/></svg>
