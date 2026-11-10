@@ -192,11 +192,15 @@ class ReviewCliTests(unittest.TestCase):
         icon = svg('<rect width="256" height="256" rx="56" fill="#0F766E"/>')
         (self.delivery / "icon.svg").write_text(icon, encoding="utf-8")
         self.project["iconAsset"] = "icon.svg"
+        (self.delivery / "icon-dark.svg").write_text(svg(), encoding="utf-8")
+        self.project["iconDarkAsset"] = "icon-dark.svg"
         result = self.generate()
         self.assertEqual(result.returncode, 0, result.stderr)
         page, _, data = self.bundle()
         record = data["projects"][0]
         self.assertEqual(record["assets"]["iconAsset"]["svg"], icon)
+        self.assertEqual(record["assets"]["iconDarkAsset"]["svg"], svg())
+        self.assertIn("background === 'dark' && v.p.assets.iconDarkAsset", page)
         self.assertIn("if (p.assets.iconAsset)", page)
 
     def test_icon_asset_absent_still_builds(self):

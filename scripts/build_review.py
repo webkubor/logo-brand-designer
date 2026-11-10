@@ -261,8 +261,9 @@ def load_manifest(path):
         for key, value in token_sources.items():
             text(value, f"tokenSources.{key}")
         assets = {"asset": load_asset(root, project.get("asset"), ident + ".asset")}
-        for key in ("darkAsset", "oldAsset", "iconAsset"):
+        for key in ("darkAsset", "oldAsset", "iconAsset", "iconDarkAsset"):
             assets[key] = load_asset(root, project[key], ident + "." + key) if project.get(key) is not None else None
+        require(not assets["iconDarkAsset"] or assets["iconAsset"], f"{ident}.iconDarkAsset 需要 iconAsset")
         records.append({"id": ident, "name": name, "tokens": tokens,
                         "tokenSources": {key: token_sources.get(key, "未标注来源，未核验") for key in tokens},
                         "rationale": lines(project.get("rationale"), "rationale"),
@@ -393,7 +394,7 @@ DATA.projects.forEach((p, index) => {
     const iconSmall = el('img'); iconSmall.alt = p.name + ' 应用图标 16px'; iconCanvas.append(iconSmall);
     const iconCaption = el('figcaption');
     iconFig.append(iconCanvas, iconCaption); iconRow.append(iconFig);
-    const note = el('p', '派生应用图标（宿主槽位）：核对 16/24px 下能否认出是同一标志。宿主按普通图片渲染且不跟随主题时，图标须自带底板。', 'muted');
+    const note = el('p', '派生图标固定以 24px / 16px 预览；深底使用深色变体（如有），其他背景使用主版本。图片内的 currentColor 不继承宿主文字颜色；实际槽位与宿主主题仍须单独验证。', 'muted');
     section.append(el('h3', '派生应用图标'), iconRow, note);
     views.push({p, nextImg, nextCanvas, caption, oldImg, oldCanvas, iconImg, iconSmall, iconCanvas, iconCaption});
   } else {
@@ -449,10 +450,11 @@ function refresh() {
     v.caption.textContent = '新图 · ' + (dark ? '独立深底版' : '主版本') + ' · ' + size + 'px';
     if (v.oldImg) {v.oldImg.style.width = v.oldImg.style.height = size + 'px'; v.oldCanvas.dataset.bg = background;}
     if (v.iconImg) {
-      v.iconImg.src = v.iconSmall.src = v.p.assets.iconAsset.dataUri;
+      const icon = background === 'dark' && v.p.assets.iconDarkAsset || v.p.assets.iconAsset;
+      v.iconImg.src = v.iconSmall.src = icon.dataUri;
       v.iconImg.style.width = v.iconImg.style.height = '24px';
       v.iconSmall.style.width = v.iconSmall.style.height = '16px'; v.iconCanvas.dataset.bg = background;
-      v.iconCaption.textContent = '应用图标 · 24px / 16px（宿主实际底色另在 screenshots/ 核对）';
+      v.iconCaption.textContent = '应用图标 · ' + (background === 'dark' && v.p.assets.iconDarkAsset ? '深色版' : '主版本') + ' · 24px / 16px（宿主实际底色另行核对）';
     }
   });
   bgButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.background === background)));

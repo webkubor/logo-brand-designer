@@ -4,7 +4,7 @@
 
 # logo-brand-designer
 
-[English](README.en.md) · [更新记录](CHANGELOG.md)
+[English](README.en.md) · [更新记录](CHANGELOG.md) · [Agent 索引](llms.txt) · [触发边界用例](evals/evals.json)
 
 **让 AI Agent 做出真正的 logo，而不是一个发光的圆角方块。**
 
@@ -111,7 +111,7 @@ npx skills add webkubor/logo-brand-designer
 
 ## 离线评审页
 
-生成器只用 Python 3.9+ 标准库。按 [manifest 示例](references/manifest-example.json) 准备 `delivery/manifest.json`，然后：
+生成器只用 Python 3.9+ 标准库。[manifest 示例](references/manifest-example.json) 的素材和来源路径均为占位，需替换为自行准备的真实文件。准备好 `delivery/manifest.json` 后：
 
 ```bash
 SKILL_DIR="$HOME/.agents/skills/logo-brand-designer"
