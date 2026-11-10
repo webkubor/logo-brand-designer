@@ -109,6 +109,14 @@ npx skills add webkubor/logo-brand-designer
 
 已有 logo、只需要侧栏或应用图标时，保留既有品牌识别线索，先核实宿主图标尺寸、背景及主题切换方式，再在实际槽位验证 16px 和 24px。评审 manifest 可选填 `iconAsset`，页面会提供两个尺寸的预览；实际宿主截图仍需单独采集。
 
+## 0.6.0 实际演示
+
+下面展示本版生成的评审页：切换浅底、深底与棋盘背景，并预览应用图标的 24px 和 16px 版本。演示来自[可复现示例](examples/release-0.6.0/)，实际宿主的渲染仍需要单独验证。
+
+![0.6.0 评审页演示](examples/release-0.6.0/media/review-0.6.0.gif)
+
+[下载 MP4 演示](examples/release-0.6.0/media/review-0.6.0.mp4) · [深色评审页截图](examples/release-0.6.0/screenshots/review-dark.png)
+
 ## 离线评审页
 
 生成器只用 Python 3.9+ 标准库。[manifest 示例](references/manifest-example.json) 的素材和来源路径均为占位，需替换为自行准备的真实文件。准备好 `delivery/manifest.json` 后：
