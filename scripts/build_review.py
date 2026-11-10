@@ -261,7 +261,7 @@ def load_manifest(path):
         for key, value in token_sources.items():
             text(value, f"tokenSources.{key}")
         assets = {"asset": load_asset(root, project.get("asset"), ident + ".asset")}
-        for key in ("darkAsset", "oldAsset"):
+        for key in ("darkAsset", "oldAsset", "iconAsset"):
             assets[key] = load_asset(root, project[key], ident + "." + key) if project.get(key) is not None else None
         records.append({"id": ident, "name": name, "tokens": tokens,
                         "tokenSources": {key: token_sources.get(key, "未标注来源，未核验") for key in tokens},
@@ -287,6 +287,8 @@ figure {margin:0} .canvas {min-height:190px;display:flex;align-items:center;just
 .canvas[data-bg="dark"] {background:#0d1117}
 .canvas[data-bg="checker"] {background-color:#fff;background-image:conic-gradient(#d3d8de 25%,transparent 0 50%,#d3d8de 0 75%,transparent 0);background-size:20px 20px}
 .canvas img {width:32px;height:32px;object-fit:contain} figcaption {margin-top:6px;color:#4c596a}
+.icon-row {margin:10px 0 4px} .icon-canvas {min-height:96px;padding:10px}
+.icon-canvas img {width:24px;height:24px;object-fit:contain}
 .token {border:1px solid #d2dae4;border-radius:6px;padding:6px 10px} .swatch {display:inline-block;width:16px;height:16px;border:1px solid #8795a6;vertical-align:middle;margin-right:7px}
 small,.muted {color:#4c596a} .evidence {font-size:13px;margin:4px 0 12px}
 pre,textarea {font:13px/1.5 ui-monospace,monospace;background:#f6f8fb;border:1px solid #c3cedc;border-radius:6px;padding:12px;max-width:100%}
@@ -344,7 +346,7 @@ function fullTask(p, note) {
     '结构检查：\n' + JSON.stringify(Object.fromEntries(Object.entries(p.assets).filter(([,a]) => a).map(([k,a]) => [k,a.validation])), null, 2),
     '验证边界：' + DATA.limitation,
     '交付：token + 来源、理念、完整 SVG、review.html、manifest JSON；截图保存到交付目录 screenshots/。',
-    '真实渲染浅底 #FFFFFF / 深底 #0D1117 / 棋盘的 32px，查看 64/128px；说明实际测试范围、截图来源及未做项。',
+    '真实渲染浅底 #FFFFFF / 深底 #0D1117 / 棋盘的 32px，查看 64/128px；若提供 iconAsset，另在宿主实际底色上核对 16/24px；说明实际测试范围、截图来源及未做项。',
     '原始 manifest（相对路径以原 manifest 目录为根；上文已附实际素材）：\n' + JSON.stringify(DATA.manifest, null, 2)
   ].join('\n\n');
 }
@@ -381,7 +383,22 @@ DATA.projects.forEach((p, index) => {
     oldCanvas.append(oldImg); old.append(oldCanvas, el('figcaption', '旧图（对照，不推定为已批准规范）')); grid.append(old);
   } else grid.append(el('p', '首次设计 / 未提供旧图', 'muted'));
   section.append(grid);
-  views.push({p, nextImg, nextCanvas, caption, oldImg, oldCanvas});
+  // the derived app icon: the slot a host renders at 16-24px, where a mark
+  // that only works large has to be simplified rather than detailed
+  if (p.assets.iconAsset) {
+    const iconRow = el('div', undefined, 'icon-row');
+    const iconFig = el('figure'); const iconCanvas = el('div', undefined, 'canvas icon-canvas');
+    iconCanvas.dataset.bg = background;
+    const iconImg = el('img'); iconImg.alt = p.name + ' 应用图标 24px'; iconCanvas.append(iconImg);
+    const iconSmall = el('img'); iconSmall.alt = p.name + ' 应用图标 16px'; iconCanvas.append(iconSmall);
+    const iconCaption = el('figcaption');
+    iconFig.append(iconCanvas, iconCaption); iconRow.append(iconFig);
+    const note = el('p', '派生应用图标（宿主槽位）：核对 16/24px 下能否认出是同一标志。宿主按普通图片渲染且不跟随主题时，图标须自带底板。', 'muted');
+    section.append(el('h3', '派生应用图标'), iconRow, note);
+    views.push({p, nextImg, nextCanvas, caption, oldImg, oldCanvas, iconImg, iconSmall, iconCanvas, iconCaption});
+  } else {
+    views.push({p, nextImg, nextCanvas, caption, oldImg, oldCanvas});
+  }
   section.append(el('h3', 'Design tokens 与来源'));
   const tokens = el('div', undefined, 'tokens');
   Object.entries(p.tokens).forEach(([key, value]) => {
@@ -431,6 +448,12 @@ function refresh() {
     v.nextImg.style.width = v.nextImg.style.height = size + 'px'; v.nextCanvas.dataset.bg = background;
     v.caption.textContent = '新图 · ' + (dark ? '独立深底版' : '主版本') + ' · ' + size + 'px';
     if (v.oldImg) {v.oldImg.style.width = v.oldImg.style.height = size + 'px'; v.oldCanvas.dataset.bg = background;}
+    if (v.iconImg) {
+      v.iconImg.src = v.iconSmall.src = v.p.assets.iconAsset.dataUri;
+      v.iconImg.style.width = v.iconImg.style.height = '24px';
+      v.iconSmall.style.width = v.iconSmall.style.height = '16px'; v.iconCanvas.dataset.bg = background;
+      v.iconCaption.textContent = '应用图标 · 24px / 16px（宿主实际底色另在 screenshots/ 核对）';
+    }
   });
   bgButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.background === background)));
   sizeButtons.forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.size) === size)));

@@ -1,0 +1,65 @@
+{
+  "skill_name": "logo-brand-designer",
+  "cases": [
+    {
+      "id": "first-logo",
+      "prompt": "帮我给这个项目做个 logo",
+      "expected_output": "先读项目资料与既有品牌资产，记录用户原话与已定/未定项；先交标志与字标的组合方案，过一个想法、换名测试、记忆点三问，出候选前先用视觉模型盲审，再给用户选",
+      "should_trigger": true
+    },
+    {
+      "id": "redesign-existing-logo",
+      "prompt": "我们公司 logo 太丑了，重新设计一个",
+      "expected_output": "先读现有 logo 与品牌素材，把它当旧图对照记录识别线索；用户已确认的线索要保留，重设计不等于推翻一切；旧图与新图一起进评审页",
+      "should_trigger": true
+    },
+    {
+      "id": "app-icon-from-approved-logo",
+      "prompt": "logo 已经定稿了，现在要给侧栏和插件列表各做一个小图标",
+      "expected_output": "这是派生应用图标不是重做 logo；先问宿主怎么渲染这个图标、出现在什么底色、有没有主题切换，再按渲染方式决定是否自带底板或用 currentColor；交付要含宿主实际底色上的 16/24px 截图",
+      "should_trigger": true
+    },
+    {
+      "id": "icon-invisible-on-dark-background",
+      "prompt": "我的图标在深色侧栏上完全看不见了",
+      "expected_output": "先查宿主是不是把图标当普通 img 渲染且不跟随主题；纯墨色线条在深底上等于隐形；修法是图标自带底板或提供深浅两版，并在宿主真实底色上重新渲染核对",
+      "should_trigger": true
+    },
+    {
+      "id": "brand-token-check",
+      "prompt": "核对一下这个项目的品牌色和 logo 是否一致",
+      "expected_output": "先盘点各端主题 token 的实际值与用途，逐条标注来源是用户给定、项目既有、素材测量还是本次建议；缺失来源写未核验；颜色不先看功能问题就定不下来",
+      "should_trigger": true
+    },
+    {
+      "id": "logo-acceptance-review",
+      "prompt": "验收一下这个 logo 做得行不行",
+      "expected_output": "按结构检查、真实 RGBA 像素、深浅底 32px 实际查看、目视确认轮廓与负空间四层验收；自动检查不能代替目视；未做过的项目如实写未做",
+      "should_trigger": true
+    },
+    {
+      "id": "favicon-only",
+      "prompt": "顺手给网站加个 favicon",
+      "expected_output": "favicon 是派生应用图标，不是品牌 logo 设计；从既有标志简化出小尺寸可辨的版本，交付多尺寸并说明实际测试范围",
+      "should_trigger": true
+    },
+    {
+      "id": "logo-review-page-only",
+      "prompt": "帮我生成一个品牌评审页",
+      "expected_output": "用 scripts/build_review.py 按 manifest-example.json 填真实资料生成离线评审 HTML；脚本只做结构检查，生成成功不等于像素透明或视觉验收通过；截图另存 screenshots/ 并注明来源与测试范围",
+      "should_trigger": true
+    },
+    {
+      "id": "pick-icon-from-library",
+      "prompt": "从图标库里挑一个图标给项目用",
+      "expected_output": "不触发本技能；挑选现成图标不等于品牌标识设计。",
+      "should_trigger": false
+    },
+    {
+      "id": "unrelated-color-tweak",
+      "prompt": "帮我把这个网页的按钮配色调一下",
+      "expected_output": "不触发本技能；这是界面配色微调，不是品牌标识设计",
+      "should_trigger": false
+    }
+  ]
+}

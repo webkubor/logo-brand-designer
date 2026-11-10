@@ -4,11 +4,13 @@
 
 # logo-brand-designer
 
+[English](README.en.md) · [更新记录](CHANGELOG.md)
+
 **让 AI Agent 做出真正的 logo，而不是一个发光的圆角方块。**
 
 标志 + 字标 · 纯 SVG · 设计门槛 · 视觉模型盲审 · 离线评审页
 
-[![version](https://img.shields.io/badge/version-0.5.0-4F46E5)](SKILL.md)
+[![version](https://img.shields.io/badge/version-0.6.0-4F46E5)](SKILL.md)
 [![license](https://img.shields.io/badge/license-MIT-0EA5E9)](LICENSE)
 [![agents](https://img.shields.io/badge/agents-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20Hermes-7C3AED)](#安装)
 
@@ -104,6 +106,8 @@ npx skills add webkubor/logo-brand-designer
 用 logo-brand-designer 重设计现有 logo：保留我给的 token 和理念，
 新旧对照，说明哪些保留、哪些是新建议，生成离线评审页。
 ```
+
+已有 logo、只需要侧栏或应用图标时，保留既有品牌识别线索，先核实宿主图标尺寸、背景及主题切换方式，再在实际槽位验证 16px 和 24px。评审 manifest 可选填 `iconAsset`，页面会提供两个尺寸的预览；实际宿主截图仍需单独采集。
 
 ## 离线评审页
 

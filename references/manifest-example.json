@@ -35,7 +35,8 @@
       ],
       "asset": "assets/mark.svg",
       "darkAsset": "assets/mark-dark.svg",
-      "oldAsset": null
+      "oldAsset": null,
+      "iconAsset": "assets/icon.svg"
     },
     {
       "id": "example-redesign",
@@ -60,7 +61,8 @@
       "recommendations": [],
       "asset": "assets/redesign.svg",
       "darkAsset": null,
-      "oldAsset": "assets/old.png"
+      "oldAsset": "assets/old.png",
+      "iconAsset": null
     }
   ]
 }

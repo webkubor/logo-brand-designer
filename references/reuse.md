@@ -43,6 +43,7 @@ python3 "$SKILL_DIR/scripts/build_review.py" \
 | `asset` | 必填本地 `.svg/.png/.webp` 路径；新设计最终交付应为 SVG。 |
 | `darkAsset` | 可选，同格式本地路径；缺省或 null 复用 asset。深底切换加载它；棋盘使用主版本。 |
 | `oldAsset` | 可选，同格式本地路径；缺省或 null 明确显示无旧图，首次设计合法，不虚填旧图。 |
+| `iconAsset` | 可选，同格式本地路径；评审页显示 24px 和 16px 派生图标预览，跟随评审页背景切换。宿主实际背景和渲染须另行核验。 |
 
 所有本地输入路径以 manifest 目录为根；禁止绝对路径、`..`、Windows 盘符、反斜杠、URL 素材及越界符号链接。单个文件（含 manifest）上限 8 MiB，是评审工具的内存界限。原 JSON 下载保留相对路径，搬迁时须带齐素材；“完整 JSON”另含实际素材 data URI、SVG 全文、SHA-256 和结构检查结果，是离线归档包，并非直接重输给构建器的 manifest。
 

@@ -188,6 +188,39 @@ class ReviewCliTests(unittest.TestCase):
                     self.assertFalse(self.output.exists())
         self.assertEqual(outside.read_text(encoding="utf-8"), svg())
 
+    def test_derived_app_icon_asset_is_optional_and_embedded(self):
+        icon = svg('<rect width="256" height="256" rx="56" fill="#0F766E"/>')
+        (self.delivery / "icon.svg").write_text(icon, encoding="utf-8")
+        self.project["iconAsset"] = "icon.svg"
+        result = self.generate()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        page, _, data = self.bundle()
+        record = data["projects"][0]
+        self.assertEqual(record["assets"]["iconAsset"]["svg"], icon)
+        self.assertIn("if (p.assets.iconAsset)", page)
+
+    def test_icon_asset_absent_still_builds(self):
+        result = self.generate()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        _, _, data = self.bundle()
+        self.assertIsNone(data["projects"][0]["assets"]["iconAsset"])
+        # the section is added at runtime, so the static page always carries
+        # the script; the payload is the contract that decides what renders
+        page = self.output.read_text(encoding="utf-8")
+        self.assertIn("if (p.assets.iconAsset)", page)
+
+    def test_icon_asset_cannot_escape_manifest_directory(self):
+        outside = self.root / "outside-icon.svg"
+        outside.write_text(svg(), encoding="utf-8")
+        (self.delivery / "linked.svg").symlink_to(outside)
+        for value in ("../outside-icon.svg", str(outside), "linked.svg"):
+            with self.subTest(value=value):
+                self.project["iconAsset"] = value
+                result = self.generate()
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertFalse(self.output.exists())
+        self.assertEqual(outside.read_text(encoding="utf-8"), svg())
+
     def test_output_cannot_overwrite_source_or_follow_symlink(self):
         source = self.delivery / "source.html"
         source.write_text("production source", encoding="utf-8")

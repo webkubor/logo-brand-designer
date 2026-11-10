@@ -1,0 +1,10 @@
+# logo-brand-designer
+
+> 为 AI Agent 提供品牌标识设计、派生应用图标和离线评审的工作流程。
+
+- [技能入口](SKILL.md)：设计门槛、品牌资料核对、视觉审核与交付要求。
+- [使用说明](README.md)：安装方法及已有示例。
+- [复用指南](references/reuse.md)：manifest、评审和截图证据。
+- [manifest 示例](references/manifest-example.json)：素材与来源字段。
+
+已有标志时，侧栏或 favicon 可以是派生图标；先核实宿主渲染方式、背景与尺寸。生成器的结构检查不等于视觉验收。
