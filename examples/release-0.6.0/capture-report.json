@@ -1,0 +1,215 @@
+{
+  "console_errors": [],
+  "page_errors": [],
+  "states": {
+    "bg-light": {
+      "captions": [
+        "新图 · 主版本 · 32px",
+        "应用图标 · 主版本 · 24px / 16px（宿主实际底色另行核对）"
+      ],
+      "mainImgs": [
+        {
+          "w": "32px",
+          "h": "32px",
+          "len": 1434
+        },
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1434
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1434
+        }
+      ],
+      "iconImgs": [
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1434
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1434
+        }
+      ],
+      "pressed": [
+        "浅底 #FFFFFF",
+        "32px"
+      ]
+    },
+    "bg-dark": {
+      "captions": [
+        "新图 · 主版本 · 32px",
+        "应用图标 · 深色版 · 24px / 16px（宿主实际底色另行核对）"
+      ],
+      "mainImgs": [
+        {
+          "w": "32px",
+          "h": "32px",
+          "len": 1434
+        },
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1454
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1454
+        }
+      ],
+      "iconImgs": [
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1454
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1454
+        }
+      ],
+      "pressed": [
+        "深底 #0D1117",
+        "32px"
+      ]
+    },
+    "bg-checker": {
+      "captions": [
+        "新图 · 主版本 · 32px",
+        "应用图标 · 主版本 · 24px / 16px（宿主实际底色另行核对）"
+      ],
+      "mainImgs": [
+        {
+          "w": "32px",
+          "h": "32px",
+          "len": 1434
+        },
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1434
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1434
+        }
+      ],
+      "iconImgs": [
+        {
+          "w": "24px",
+          "h": "24px",
+          "len": 1434
+        },
+        {
+          "w": "16px",
+          "h": "16px",
+          "len": 1434
+        }
+      ],
+      "pressed": [
+        "棋盘",
+        "32px"
+      ]
+    },
+    "size-32": [
+      {
+        "w": "32px",
+        "h": "32px"
+      },
+      {
+        "w": "24px",
+        "h": "24px"
+      },
+      {
+        "w": "16px",
+        "h": "16px"
+      }
+    ],
+    "size-64": [
+      {
+        "w": "64px",
+        "h": "64px"
+      },
+      {
+        "w": "24px",
+        "h": "24px"
+      },
+      {
+        "w": "16px",
+        "h": "16px"
+      }
+    ],
+    "size-128": [
+      {
+        "w": "128px",
+        "h": "128px"
+      },
+      {
+        "w": "24px",
+        "h": "24px"
+      },
+      {
+        "w": "16px",
+        "h": "16px"
+      }
+    ]
+  },
+  "files": {
+    "canvas-checker-0.png": {
+      "bytes": 12250,
+      "sha256": "e8ef58206590a964556407adc8041bcf96a1965b0369cb08154edcc6f65e11ac"
+    },
+    "canvas-dark-0.png": {
+      "bytes": 11616,
+      "sha256": "ba4874205abbfd8605cdaa3a00af6d272186e49138eece0f1915d3fd0754e63e"
+    },
+    "canvas-light-0.png": {
+      "bytes": 11611,
+      "sha256": "6bacc09663c0a2ef9edcd41fe7e62733fcc43844d891a0869d3b4c77d5bdf384"
+    },
+    "icon-checker.png": {
+      "bytes": 22450,
+      "sha256": "c2de70e8b3fb9ad6b4caf46f137fdf382973175410073ef24956c0ed997bd2f7"
+    },
+    "icon-dark.png": {
+      "bytes": 22713,
+      "sha256": "e8e59c54ba471ad7096f34f9b64fabe882d27d0979224c9050fd4d8d0cf21dcc"
+    },
+    "icon-light.png": {
+      "bytes": 21923,
+      "sha256": "593843a565fe362f91242f554e92623619c23e4dc590e59c9ee6424d60a68764"
+    },
+    "playback-gif-in-browser.png": {
+      "bytes": 288636,
+      "sha256": "b95dbde7105df06655236acdeb005d3b8fe1075adb813e8b70cfcf0049092a5e"
+    },
+    "playback-mp4-in-browser.png": {
+      "bytes": 181615,
+      "sha256": "340bbff1a31f5c413861c8ac9f90f4f121117517acf823bd99928503b2e7a5fd"
+    },
+    "review-checker.png": {
+      "bytes": 720622,
+      "sha256": "1e92cf519d8e7044ba38b8a9ccc48eec14f9848f7df74537af751a8365b73fed"
+    },
+    "review-dark.png": {
+      "bytes": 720441,
+      "sha256": "ce0242c7e91e0df2edcdcdc13be0264b1bedd3d151f20e47f999649094dfbe33"
+    },
+    "review-light.png": {
+      "bytes": 719680,
+      "sha256": "73b5c70b7275d628698dd4c4a7a0390360a9d7ad98fbde5639948377e46f52d6"
+    },
+    "review-size-128.png": {
+      "bytes": 737929,
+      "sha256": "cf8347e3080527b4b2f83cb98370d504b0ca1d02e3859f1056f2ec5ebf448b2f"
+    }
+  }
+}

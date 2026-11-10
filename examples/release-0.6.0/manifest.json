@@ -1,0 +1,51 @@
+{
+  "projects": [
+    {
+      "id": "cortexos-corner-060",
+      "name": "CortexOS · 切角标志（0.6.0 派生图标演示）",
+      "sourceFiles": [
+        "assets/mark.svg",
+        {
+          "path": "assets/app-icon.svg",
+          "label": "派生应用图标槽位素材（与 mark.svg 同几何）"
+        },
+        {
+          "path": "assets/app-icon-dark.svg",
+          "label": "深底派生图标：仅把 gA 渐变两端换为深色档，几何未改"
+        },
+        {
+          "path": "EVIDENCE.md",
+          "label": "本目录的渲染与验证记录（命令与输出）"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/webkubor/logo-brand-designer",
+          "label": "仓库主页（构建时未联网核验）"
+        }
+      ],
+      "tokens": {
+        "primary": "#4F46E5",
+        "accent": "#5EEAD4",
+        "onLight": "#4F46E5",
+        "onDark": "#5EEAD4",
+        "background": "transparent"
+      },
+      "tokenSources": {
+        "primary": "examples/cortexos/build.py 的 gA 渐变起点；本目录 assets/mark.svg 实测取色",
+        "accent": "examples/cortexos/build.py 的 gHot 渐变起点；本目录 assets/mark.svg 实测取色",
+        "onLight": "浅底 #FFFFFF 上与 primary 同值，实测对比度见 EVIDENCE.md",
+        "onDark": "深底 #0D1117 上取 gHot 起点，实测对比度见 EVIDENCE.md",
+        "background": "SVG 无底色 rect，rsvg-convert 实渲染 alpha 边界见 EVIDENCE.md"
+      },
+      "rationale": "沿用仓库既有的 CortexOS「切角」示例标志，不做新设计：完整的方块是组织空间，被切下的一角向外推出。0.6.0 的新增能力是派生应用图标，因此本页同时给出 24px / 16px 槽位预览。",
+      "userDecisions": [],
+      "recommendations": [
+        "这是示例素材，不是 CortexOS 的定稿品牌；对外发布前需替换为已确认资产。"
+      ],
+      "asset": "assets/mark.svg",
+      "iconAsset": "assets/app-icon.svg",
+      "iconDarkAsset": "assets/app-icon-dark.svg"
+    }
+  ]
+}
