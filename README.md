@@ -113,7 +113,9 @@ npx skills add webkubor/logo-brand-designer
 
 下面展示本版生成的评审页：切换浅底、深底与棋盘背景，并预览应用图标的 24px 和 16px 版本。演示来自[可复现示例](examples/release-0.6.0/)，实际宿主的渲染仍需要单独验证。
 
-![0.6.0 评审页演示](examples/release-0.6.0/media/review-0.6.0.gif)
+https://github.com/user-attachments/assets/e81281ac-5d8d-4eca-b85b-6f6cbc04034c
+
+![0.6.0 评审页动图](examples/release-0.6.0/media/review-0.6.0.gif)
 
 [下载 MP4 演示](examples/release-0.6.0/media/review-0.6.0.mp4) · [深色评审页截图](examples/release-0.6.0/screenshots/review-dark.png)
 
