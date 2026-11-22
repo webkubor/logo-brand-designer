@@ -5,4 +5,4 @@ __pycache__/
 /delivery/
 
 # agent 工作树（agent 本地运行时产物，不入库）
-.claude/worktrees/
+.claude/
