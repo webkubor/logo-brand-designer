@@ -5,56 +5,82 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>本地 Logo 评审</title>
 <style>
-:root{color-scheme:light;color:#232232;background:#f4f2f8;font:16px/1.55 system-ui,sans-serif}
+:root{color-scheme:light;color:#242129;background:white;font:16px/1.55 system-ui,sans-serif;--line:#e6e0e8;--ink-soft:#655d69;--accent:#58358b}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-main{width:min(1140px,calc(100% - 32px));margin:auto;padding:32px 0 60px}
-header{border-bottom:1px solid #ded9e5;padding-bottom:16px;margin-bottom:16px}
-h1,h2,h3,p{margin:0 0 12px}
-h1{font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:-.05em}
-h2{font-size:1.3rem}h3{font-size:1rem}
-.muted{color:#5e566a}
-nav,.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
-button,input{font:inherit}
-button{border:1px solid #aaa0be;background:white;color:#282035;padding:7px 12px;border-radius:7px;min-height:42px;cursor:pointer}
-button[aria-pressed="true"],.primary{background:#51398d;color:white;border-color:#51398d}
-button:disabled{opacity:.58;cursor:default}
-button:focus-visible,input:focus-visible{outline:2px solid #51398d;outline-offset:3px}
-#panel{border:1px solid #ddd6e5;border-radius:12px;background:white;padding:18px}
-#choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(245px,100%),1fr));gap:12px}
-label.card{display:block;border:1px solid #ded9e5;border-radius:9px;overflow:hidden;cursor:pointer}
-label.card:has(input:checked){border-color:#51398d;box-shadow:inset 0 0 0 1px #51398d}
-.card .copy{padding:11px 14px}.copy h3{display:inline;font-weight:700}
-.card .copy p{margin:7px 0 0;color:#5e566a;font-size:.9rem}
-.swatch{height:108px;display:grid;place-items:center;overflow:hidden;position:relative}
-.swatch img{width:clamp(95px,74%,204px);height:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-53%)}
-.light{background:#fff}.dark{background:#11121a}
-#timeline{margin-top:27px}
-#events{list-style:none;margin:0;padding:0}
-#events li{border-top:1px solid #ded9e5;padding:10px 0}
-#events time{color:#5e566a;font-size:.875rem;margin-right:8px}
-#status{color:#6c3488;min-height:1.55em}
+main{width:min(1160px,calc(100% - 36px));margin:auto;padding:34px 0 55px}
+header{display:flex;align-items:start;justify-content:space-between;gap:15px;flex-wrap:wrap}
+h1,h2,h3,p{margin:0 0 9px}
+h1{font-size:clamp(1.8rem,5vw,2.65rem);letter-spacing:-.045em}
+h2{font-size:1.18rem}h3{font-size:1rem}
+.muted,#connection{color:var(--ink-soft);font-size:14px}
+#connection{margin-top:8px}
+nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0}
+button,input,a.download{font:inherit}
+button,a.download{border:1px solid var(--line);background:white;color:#292431;padding:7px 11px;border-radius:6px;min-height:40px;cursor:pointer;text-decoration:none}
+nav button{text-align:left}
+.step-state{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px}
+nav button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.primary{background:#2b2036;color:white;border-color:#2b2036}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(225px,.34fr);gap:22px;align-items:start}
+#panel,#timeline{border-top:1px solid var(--line);padding-top:15px}
+.panel-head,.controls{display:flex;align-items:start;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.controls{justify-content:start;margin-top:14px}
+.surface button{font-size:13px;min-height:34px}
+.surface button[aria-pressed=true]{color:var(--accent);border-color:var(--accent)}
+#choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(178px,100%),1fr));gap:9px}
+.card{display:block;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+label.card{cursor:pointer}
+label.card:has(input:checked){border-color:var(--accent)}
+.card .copy{padding:10px 11px}.copy h3{display:inline;font-weight:650}
+.card .copy p{margin:6px 0 0;color:var(--ink-soft);font-size:13px}
+.swatch{height:132px;position:relative;overflow:hidden}
+.swatch img{width:min(84%,205px);height:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-53%)}
+#choices.final .swatch{height:184px}
+#choices.final .swatch img{width:min(85%,360px)}
+[data-surface=dark] .swatch{background:#211e28}
+[data-surface=grid] .swatch{background-color:#fff;background-image:conic-gradient(#e7e3eb 25%,transparent 0 50%,#e7e3eb 0 75%,transparent 0);background-size:16px 16px}
+#events{list-style:none;margin:0;padding:0;max-height:590px;overflow:auto}
+#events li{border-top:1px solid var(--line);padding:9px 1px;font-size:14px}
+#events time{display:block;color:var(--ink-soft);font-size:12px;margin-bottom:3px}
+#events strong{font-weight:630}
+#events p{margin:4px 0 0;color:var(--ink-soft);font-size:13px}
+#status{color:var(--accent);min-height:1.4em;margin-top:7px}
+.downloads{margin-top:12px}
+@media(max-width:760px){.workspace{grid-template-columns:1fr;gap:12px}#events{max-height:350px}.panel-head{display:block}.surface{margin-bottom:9px}}
+@media(max-width:425px){main{width:calc(100% - 24px);padding-top:23px}nav{gap:5px}nav button{padding:6px;font-size:14px}.step-state{font-size:12px}}
 </style>
 </head>
 <body>
 <main>
-<header><h1 id="title">本地 Logo 评审</h1><p class="muted">查看进度、比较候选，保存每一步的决定。</p></header>
+<header><div><h1 id="title">本地 Logo 评审</h1><p class="muted">比较候选，逐步确认你的设计。</p></div><p id="connection" role="status">连接本地评审…</p></header>
 <nav aria-label="评审阶段">
 <button type="button" data-stage="shape">形态</button>
 <button type="button" data-stage="color">配色</button>
 <button type="button" data-stage="final">最终确认</button>
 </nav>
+<div class="workspace">
 <section id="panel" aria-labelledby="stage-title">
-<h2 id="stage-title"></h2>
-<p id="summary" class="muted"></p>
-<div id="choices"></div>
+<div class="panel-head">
+  <div><h2 id="stage-title"></h2><p id="summary" class="muted"></p></div>
+  <div class="surface" role="group" aria-label="预览背景">
+    <button type="button" data-surface-choice="paper" aria-pressed="true">浅色</button>
+    <button type="button" data-surface-choice="grid" aria-pressed="false">透明网格</button>
+    <button type="button" data-surface-choice="dark" aria-pressed="false">深色</button>
+  </div>
+</div>
+<div id="choices" data-surface="paper"></div>
+<div id="downloads" class="controls downloads" hidden></div>
 <div class="controls">
 <button type="button" id="refresh">刷新候选</button>
 <button type="button" class="primary" id="approve">确认当前方案</button>
 </div>
 <p id="status" role="status"></p>
 </section>
-<section id="timeline"><h2>进度记录</h2><ol id="events"></ol></section>
+<aside id="timeline" aria-labelledby="timeline-title"><h2 id="timeline-title">进度记录</h2><ol id="events"></ol></aside>
+</div>
 </main>
 <script>
 const stages = {shape:'形态', color:'配色', final:'最终确认'};
@@ -63,6 +89,7 @@ let active = 'shape';
 let state = null;
 let candidates = {options:{shape:[],color:[]},errors:{}};
 let checked = '';
+let surface = 'paper';
 let loading = false;
 
 const el = (tag, value) => {
@@ -75,15 +102,13 @@ const current = (stage, choice) => candidates.options[stage].some(item => item.i
 function preview(item, pick, chosen) {
   const card = el(pick ? 'label' : 'article');
   card.className = 'card';
-  for (const tone of ['light','dark']) {
-    const swatch = el('div');
-    swatch.className = 'swatch ' + tone;
-    const image = el('img');
-    image.src = item[tone];
-    image.alt = item.name + (tone === 'light' ? ' 浅底' : ' 深底');
-    swatch.append(image);
-    card.append(swatch);
-  }
+  const swatch = el('div');
+  swatch.className = 'swatch';
+  const image = el('img');
+  image.src = surface === 'dark' ? item.dark : item.light;
+  image.alt = item.name;
+  swatch.append(image);
+  card.append(swatch);
   const copy = el('div');
   copy.className = 'copy';
   if (pick) {
@@ -117,29 +142,52 @@ function render() {
     const key = button.dataset.stage;
     button.setAttribute('aria-pressed', String(key === active));
     const approved = key === 'final' ? state.decisions.final && current('shape',state.decisions.shape) && current('color',state.decisions.color) : current(key,state.decisions[key]);
-    button.textContent = stages[key] + (approved ? ' ✓' : '');
+    const item = state.decisions[key];
+    const fallback = key === 'final' ? '待确认' : candidates.options[key].length ? candidates.options[key].length + ' 个候选' : '待产出';
+    const detail = el('span', approved ? '已确认 · ' + item.name : item ? '素材已更新，待复核' : fallback);
+    detail.className = 'step-state';
+    button.replaceChildren(document.createTextNode(stages[key]), detail);
   });
   const shape = state.decisions.shape;
   const color = state.decisions.color;
   let message = '查看深浅底效果，选择你认可的候选。';
   if (active === 'color' && !current('shape',shape)) message = '请先确认当前版本的形态。';
   if (active === 'final') {
-    message = '确认后会保存选中的形态和配色，供后续交付引用。';
+    message = '最终确认后，可下载透明背景的 SVG。';
     if (shape || color) message += ' 形态：' + (shape?.name || '待确认') + '，配色：' + (color?.name || '待确认') + '。';
     if (state.decisions.final && current('shape',shape) && current('color',color)) message = '已定稿：' + state.decisions.final.name + '。';
   }
   byId('summary').textContent = candidates.errors[active] || message;
   const chosen = active === 'final' ? candidates.options.color.filter(item => current('color',color) && item.id === color.id) : candidates.options[active];
   const cards = chosen.map(item => preview(item, active !== 'final', item.id === checked));
-  byId('choices').replaceChildren(...(cards.length ? cards : [el('p','当前阶段暂无候选。')]));
+  const gallery = byId('choices');
+  gallery.classList.toggle('final', active === 'final');
+  gallery.dataset.surface = surface;
+  gallery.replaceChildren(...(cards.length ? cards : [el('p','当前阶段暂无候选。')]));
+  const downloads = byId('downloads');
+  downloads.replaceChildren();
+  const final = state.decisions.final;
+  if (active === 'final' && final && current('shape',shape) && current('color',color) && final.sha === color?.sha && chosen.length) {
+    for (const tone of ['light','dark']) {
+      const asset = chosen[0][tone];
+      if (!asset.startsWith('data:image/svg+xml;')) continue;
+      const link = el('a',tone === 'light' ? '下载浅底用 SVG' : '下载深底用 SVG');
+      link.className = 'download';
+      link.href = asset;
+      link.download = 'logo-' + tone + '.svg';
+      downloads.append(link);
+    }
+  }
+  downloads.hidden = !downloads.childElementCount;
   byId('approve').textContent = active === 'final' ? '确认最终方案' : '确认' + stages[active];
   byId('approve').disabled = !canApprove();
   byId('events').replaceChildren(...[...state.events].reverse().map(event => {
     const row = el('li');
     const clock = el('time',new Date(event.time).toLocaleString());
     clock.dateTime = event.time;
-    const description = stages[event.stage] + ' · ' + (event.choice?.name || event.message);
-    row.append(clock, document.createTextNode(description));
+    const description = stages[event.stage] + ' · ' + (event.kind === 'decision' ? '确认 ' + event.choice.name : '更新');
+    row.append(clock, el('strong',description));
+    if (event.message) row.append(el('p',event.message));
     return row;
   }));
 }
@@ -155,12 +203,16 @@ async function refresh(force=false) {
   loading = true;
   try {
     const newest = await get('/api/state');
+    const last = newest.events.at(-1);
+    const label = last ? '已连接 · 最近更新 ' + new Date(last.time).toLocaleTimeString() : '已连接 · 等待进度';
+    if (byId('connection').textContent !== label) byId('connection').textContent = label;
     if (force || !state || state.revision !== newest.revision) {
       candidates = await get('/api/options');
       state = newest;
       render();
     }
   } catch (error) {
+    byId('connection').textContent = '连接中断';
     byId('status').textContent = error.message;
   } finally {
     loading = false;
@@ -171,6 +223,12 @@ document.querySelectorAll('[data-stage]').forEach(button => button.addEventListe
   active = button.dataset.stage;
   checked = state?.decisions[active]?.id || '';
   byId('status').textContent = '';
+  render();
+}));
+document.querySelectorAll('[data-surface-choice]').forEach(button => button.addEventListener('click', () => {
+  surface = button.dataset.surfaceChoice;
+  document.querySelectorAll('[data-surface-choice]').forEach(control =>
+    control.setAttribute('aria-pressed', String(control === button)));
   render();
 }));
 byId('refresh').addEventListener('click', () => refresh(true));

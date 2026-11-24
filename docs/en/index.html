@@ -22,17 +22,77 @@
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="../">logo-brand-designer</a>
-<nav aria-label="Navigation"><a href="../#cases">Examples</a><a href="../showcase/">Community</a><a href="https://github.com/webkubor/logo-brand-designer">GitHub</a><a href="../">中文</a></nav></div></header>
+<nav aria-label="Navigation"><a href="#journey">Process</a><a href="#cases">Examples</a><a href="../showcase/">Community</a><a href="https://github.com/webkubor/logo-brand-designer">GitHub</a><a href="../">中文</a></nav></div></header>
 <main>
 
-<section class="hero wrap"><div><h1>Design a distinctive logo from scratch</h1><p class="lede">An open-source design skill for beginners. Describe your product to Codex or Claude Code, then review shapes and colors and get a transparent SVG and app icon.</p><div class="actions"><a class="button primary" href="#install">Install the skill</a><a class="button" href="#cases">Explore the cases</a></div></div>
-<div class="artwork" aria-label="Shipped marks">
-<figure><img src="../assets/nativecrew.png" width="256" height="256" alt="NativeCrew Logo"><figcaption>NativeCrew</figcaption></figure>
-<figure><img src="../assets/museav-music-dark.svg" width="256" height="256" alt="MuseAV Music Logo"><figcaption>MuseAV Music</figcaption></figure>
+
+<section class="hero wrap">
+  <div class="hero-copy">
+    <h1>Design a logo of your own</h1>
+    <p class="lede">Work with your agent to choose a shape and palette, then get a transparent SVG. No design experience needed.</p>
+    <div class="actions"><a class="button primary" href="#journey">Follow a real design</a><a class="button" href="#install">Install the skill</a></div>
+  </div>
+  <div class="hero-marks" aria-label="Shipped logos">
+    <figure><img src="../assets/nativecrew.svg" width="256" height="256" alt="NativeCrew"><figcaption>NativeCrew</figcaption></figure>
+    <figure><img src="../assets/museav-music-light.svg" width="256" height="256" alt="MuseAV Music"><figcaption>MuseAV Music</figcaption></figure>
+  </div>
+</section>
+<section class="band" id="journey"><div class="wrap">
+  <div class="section-top"><div><h2>How a logo came together</h2>
+  <p>The actual MuseAV Music review. Open each stage to see the options, decision, and final files.</p></div>
+  <div class="preview-controls" role="group" aria-label="Preview surface only">
+    <button type="button" data-preview-mode="paper" aria-pressed="true">Light</button>
+    <button type="button" data-preview-mode="grid" aria-pressed="false">Transparency</button>
+    <button type="button" data-preview-mode="dark" aria-pressed="false">Dark</button>
+  </div></div>
+  <div class="journey" data-journey data-preview="paper">
+    <details open><summary><span>Explore shapes</span><strong>01B waveform selected</strong></summary>
+      <div class="review-body"><p>Starting from 01, 01B kept the angled entrance and added a short rebound at the end.</p>
+        <div class="mark-row">
+          <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/museav-01.svg" width="256" height="256" loading="lazy" alt="01 · First outline"></div><figcaption>01 · First outline</figcaption></figure>
+          <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/museav-01a.svg" width="256" height="256" loading="lazy" alt="01A · One rebound"></div><figcaption>01A · One rebound</figcaption></figure>
+          <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/museav-01b.svg" width="256" height="256" loading="lazy" alt="01B · Selected"></div><figcaption>01B · Selected</figcaption></figure>
+        </div>
+      </div>
+    </details>
+    <details open><summary><span>Review colors</span><strong>02 Mauve selected</strong></summary>
+      <div class="review-body"><p>The three palettes share the 01B outline. Mauve moves from lavender to deep violet, ending in muted blue.</p>
+       <div class="mark-row">
+         <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/museav-color-01.svg" width="256" height="256" loading="lazy" alt="01 · Ice blue"></div><figcaption>01 · Ice blue</figcaption></figure>
+         <figure class="mark-sample"><div class="mark-stage"><img src="../assets/museav-music-light.svg" width="256" height="256" loading="lazy" alt="02 · Mauve, selected"></div><figcaption>02 · Mauve, selected</figcaption></figure>
+         <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/museav-color-03.svg" width="256" height="256" loading="lazy" alt="03 · Coral"></div><figcaption>03 · Coral</figcaption></figure>
+       </div>
+      </div>
+    </details>
+    <details><summary><span>Deliver final files</span><strong>Two transparent SVG files</strong></summary>
+      <div class="review-body"><p>The workbench header uses the dark-surface variant. The browser tab switches with its color scheme.</p>
+       <div class="mark-row final-row">
+         <figure class="mark-sample"><div class="mark-stage"><img src="../assets/museav-music-light.svg" width="256" height="256" loading="lazy" alt="Mark for light surfaces"></div><figcaption>Mark for light surfaces</figcaption></figure>
+         <figure class="mark-sample"><div class="mark-stage"><img src="../assets/museav-music-dark.svg" width="256" height="256" loading="lazy" alt="Mark for dark surfaces"></div><figcaption>Mark for dark surfaces</figcaption></figure>
+       </div>
+       <div class="actions"><a class="button" href="../assets/museav-music-light.svg" download>Get light SVG</a><a class="button" href="../assets/museav-music-dark.svg" download>Get dark SVG</a></div>
+      </div>
+    </details>
+  </div>
+  <p class="inline-note">Want this workflow for your own project? <a href="https://github.com/webkubor/logo-brand-designer/blob/main/references/workbench.md">Start a local review</a></p>
 </div></section>
-<section class="band" id="cases"><div class="wrap"><div class="section-top"><div><h2>Real work</h2><p>Marks shipped in real products.</p></div><label><span class="sr">Search cases</span><input class="search" type="search" data-case-search placeholder="Example: SVG, music, DSH"></label></div>
-<div class="cards"><article class="card" data-case="DSH 插件 AI Agent 范围 派工协作 app icon ACP"><div class="visual native"><img src="../assets/nativecrew.png" width="256" height="256" loading="lazy" alt="NativeCrew Logo"></div><div class="card-body"><h3>NativeCrew</h3><p>Orange layers sit inside one continuous outline. The transparent icon ships in the DSH team workbench.</p><a href="https://www.npmjs.com/package/@dsh-plugins/nativecrew">View plugin</a></div></article><article class="card" data-case="音乐 音波 SVG favicon 透明底 wave dark mode"><div class="visual light"><img src="../assets/museav-music-light.svg" width="256" height="256" loading="lazy" alt="MuseAV Music Logo"></div><div class="card-body"><h3>MuseAV Music</h3><p>The team picked the waveform in monochrome, then approved the mauve palette. Light and dark SVGs ship with the workbench.</p><a href="https://www.museav.top/ecosystem">View product showcase</a></div></article></div><p class="status" data-search-empty aria-live="polite" hidden>No matching case.</p></div></section>
-<section class="band"><div class="wrap"><h2>From shape to shipped mark</h2><div class="steps"><div><h3>Choose the shape</h3><p>Compare monochrome silhouettes at small sizes.</p></div><div><h3>Approve color</h3><p>Place each palette against the actual backgrounds.</p></div><div><h3>Verify in product</h3><p>Check the transparent SVG and the final app icon where they are used.</p></div></div></div></section>
+<section class="band" id="cases"><div class="wrap">
+  <div class="section-top"><div><h2>Marks in real products</h2></div><label><span class="sr">Search cases</span><input class="search" type="search" data-case-search placeholder="Search by project or use"></label></div>
+  <div class="cards">
+    <article class="project-case" data-case="DSH 插件 AI Agent 派工协作 陶橙 app icon">
+      <div class="mark-stage"><img src="../assets/nativecrew.svg" width="256" height="256" loading="lazy" alt="NativeCrew"></div>
+      <h3>NativeCrew</h3><p>A DSH agent workbench. One silhouette, finished with layers of orange.</p>
+      <details><summary>Compare the outline and shipped icon</summary><div class="mark-row final-row">
+      <figure class="mark-sample"><div class="mark-stage"><img src="../assets/process/nativecrew-outline.svg" width="256" height="256" loading="lazy" alt="01 · Outline"></div><figcaption>01 · Outline</figcaption></figure><figure class="mark-sample"><div class="mark-stage"><img src="../assets/nativecrew.png" width="256" height="256" loading="lazy" alt="Shipped plugin icon"></div><figcaption>Shipped plugin icon</figcaption></figure></div></details>
+      <div class="case-links"><a href="https://www.npmjs.com/package/@dsh-plugins/nativecrew">View plugin</a><a href="../assets/nativecrew.svg" download>Get vector reconstruction</a></div>
+    </article>
+    <article class="project-case" data-case="音乐 音波 SVG favicon 透明底 wave dark mode">
+      <div class="mark-stage"><img src="../assets/museav-music-light.svg" width="256" height="256" loading="lazy" alt="MuseAV Music"></div>
+      <h3>MuseAV Music</h3><p>A Suno release workbench. The mauve 01B waveform appears in the header and browser tab.</p>
+      <div class="case-links"><a href="#journey">Follow the design review</a><a href="https://www.museav.top/ecosystem">View product showcase</a></div>
+    </article>
+  </div><p class="status" data-search-empty aria-live="polite" hidden>No matching cases.</p>
+</div></section>
 <section class="band" id="keywords"><div class="wrap"><h2>Compare keyword trends</h2><p class="muted">Check a term against recent Google Trends data.</p><div class="keyword-list"><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=AI+Logo+%E8%AE%BE%E8%AE%A1">AI Logo 设计</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=%E9%80%8F%E6%98%8E%E5%BA%95+Logo">透明底 Logo</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=SVG+Logo+%E8%AE%BE%E8%AE%A1">SVG Logo 设计</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=Claude+Code+Logo+Skill">Claude Code Logo Skill</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=AI+logo+generator">AI logo generator</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=Codex+logo+design+skill">Codex logo design skill</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=SVG+logo+design">SVG logo design</a><a href="https://trends.google.com/trends/explore?date=today+3-m&amp;q=favicon+design">favicon design</a></div>
 <form class="controls" action="https://trends.google.com/trends/explore" method="get" data-trends><input type="hidden" name="date" value="today 3-m"><label><span class="sr">Compare keyword trends</span><input name="q" type="search" maxlength="120" required placeholder="e.g. transparent logo"></label><button class="button" type="submit">Compare in Google Trends</button></form></div></section>
 <section class="band" id="install"><div class="wrap"><h2>Install</h2><pre class="install"><code>npx skills add webkubor/logo-brand-designer</code></pre><p><a href="https://github.com/webkubor/logo-brand-designer">Installation instructions on GitHub</a></p></div></section>
