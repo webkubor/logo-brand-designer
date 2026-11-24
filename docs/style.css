@@ -66,3 +66,8 @@ input{min-height:44px;color:var(--ink);background:var(--panel);border:1px solid 
 
 #cases .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:560px){#cases .cards{grid-template-columns:1fr}}
+.legal-copy{max-width:780px}
+.legal-copy section{padding:25px 0}
+.legal-copy h2{font-size:1.45rem}
+.legal-copy p{color:var(--muted)}
+.legal-copy a{color:var(--accent);text-underline-offset:3px}

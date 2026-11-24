@@ -1,8 +1,8 @@
 # logo-brand-designer
 
-An open-source logo design skill for Codex, Claude Code, and other tools that support Agent Skills. Compare silhouettes, approve a palette, and deliver transparent SVGs, browser icons, and an offline review page.
+An open-source logo design skill for beginners using Codex, Claude Code, or other agents. Describe your product and walk through the choices to get a distinctive mark, transparent SVGs, browser icons, and an offline review page.
 
-[Website](https://webkubor.github.io/logo-brand-designer/en/) · [Community showcase](https://webkubor.github.io/logo-brand-designer/showcase/) · [中文](README.md)
+[Website](https://webkubor.github.io/logo-brand-designer/en/) · [Community showcase](https://webkubor.github.io/logo-brand-designer/showcase/) · [中文](README.md) · [Legal notice](https://webkubor.github.io/logo-brand-designer/legal/)
 
 ## Shipped product marks
 

@@ -1,8 +1,8 @@
 # logo-brand-designer
 
-给 Codex、Claude Code 和其他支持 Agent Skills 的工具用的 **Logo 设计技能**。和 Agent 一起比较轮廓、选定配色，再拿到透明底 SVG、浏览器图标和能独立打开的评审页。
+**给零基础用户的 Logo 设计技能。** 告诉 Codex 或 Claude Code 你的产品做什么，就能一步步选轮廓、选配色，拿到有辨识度的透明底 SVG、浏览器图标和评审页。
 
-[官网](https://webkubor.github.io/logo-brand-designer/) · [社区作品](https://webkubor.github.io/logo-brand-designer/showcase/) · [English](README.en.md)
+[官网](https://webkubor.github.io/logo-brand-designer/) · [社区作品](https://webkubor.github.io/logo-brand-designer/showcase/) · [English](README.en.md) · [法律声明](https://webkubor.github.io/logo-brand-designer/legal/)
 
 ## 已用在产品里的 Logo
 
