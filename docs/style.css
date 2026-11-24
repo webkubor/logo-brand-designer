@@ -62,3 +62,6 @@ input{min-height:44px;color:var(--ink);background:var(--panel);border:1px solid 
 .community-hero h1{font-size:clamp(2.4rem,5.3vw,4.4rem)}
 @media(max-width:840px){.hero{grid-template-columns:1fr;gap:25px;padding:48px 0}.artwork{max-width:560px}.cards,.steps{grid-template-columns:1fr 1fr}.section-top{align-items:start}}
 @media(max-width:560px){.wrap{width:calc(100% - 32px)}.top .wrap{gap:6px}nav{gap:12px}.hero{padding:40px 0}.artwork figure,.artwork figure:last-child{height:145px}.artwork figure:first-child{transform:none}.section-top{display:block}.section-top input{margin-top:14px}.cards,.steps{grid-template-columns:1fr}section.band{padding:36px 0}}
+
+.card .visual.light img{position:absolute;top:50%;left:50%;height:auto;transform:translate(-50%,-54%)}
+.card .visual.cortex img{position:absolute;inset:0;object-fit:contain}
