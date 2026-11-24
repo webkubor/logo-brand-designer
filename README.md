@@ -35,6 +35,10 @@ npx skills add webkubor/logo-brand-designer
 
 [技能说明](SKILL.md) · [离线评审页](references/reuse.md) · [本地评审工作台](references/workbench.md) · [更新记录](CHANGELOG.md)
 
+## 流程实验
+
+- [Godbot 标识设计实验](examples/godbot-experiment/)：委托案例的本地候选评审页与过程记录，尚未定稿；此页不在官网公开。
+
 ## 分享你的作品
 
 [提交 Logo 作品](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml)，填写公开的项目名、图片、简介和链接。提交会同步到[社区展台](https://webkubor.github.io/logo-brand-designer/showcase/)，访客可以直接打开你的项目。

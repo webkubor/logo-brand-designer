@@ -25,6 +25,10 @@ Ask your agent to use **logo-brand-designer**, inspect the product's brand mater
 
 [Skill instructions](SKILL.md) · [Offline review guide](references/reuse.md) · [Local review workbench](references/workbench.md) · [Changelog](CHANGELOG.md)
 
+## Process experiment
+
+- [Godbot logo experiment](examples/godbot-experiment/) (Chinese review page): a local commission case study; not final and not published on the website.
+
 ## Share your work
 
 [Submit a project](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml) with its public link, logo image, and a short description. Public submissions appear in the [community showcase](https://webkubor.github.io/logo-brand-designer/showcase/).

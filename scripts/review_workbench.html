@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>本地 Logo 评审</title>
+<title>本地标识评审</title>
 <style>
 :root{color-scheme:light;color:#242129;background:white;font:16px/1.55 system-ui,sans-serif;--line:#e6e0e8;--ink-soft:#655d69;--accent:#58358b}
 *{box-sizing:border-box}
@@ -23,7 +23,7 @@ nav button{text-align:left}
 nav button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
 .primary{background:#2b2036;color:white;border-color:#2b2036}
 button:disabled{opacity:.55;cursor:default}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(225px,.34fr);gap:22px;align-items:start}
 #panel,#timeline{border-top:1px solid var(--line);padding-top:15px}
 .panel-head,.controls{display:flex;align-items:start;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -49,6 +49,8 @@ label.card:has(input:checked){border-color:var(--accent)}
 #events p{margin:4px 0 0;color:var(--ink-soft);font-size:13px}
 #status{color:var(--accent);min-height:1.4em;margin-top:7px}
 .downloads{margin-top:12px}
+.review-note{border-top:1px solid var(--line);margin-top:20px;padding-top:15px}
+#note-input{display:block;width:100%;min-height:92px;margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font:inherit;resize:vertical}
 @media(max-width:760px){.workspace{grid-template-columns:1fr;gap:12px}#events{max-height:350px}.panel-head{display:block}.surface{margin-bottom:9px}}
 @media(max-width:425px){main{width:calc(100% - 24px);padding-top:23px}nav{gap:5px}nav button{padding:6px;font-size:14px}.step-state{font-size:12px}}
 </style>
@@ -77,6 +79,12 @@ label.card:has(input:checked){border-color:var(--accent)}
 <button type="button" id="refresh">刷新候选</button>
 <button type="button" class="primary" id="approve">确认当前方案</button>
 </div>
+<section class="review-note" aria-labelledby="note-title">
+<h2 id="note-title">补充建议</h2>
+<p class="muted">意见会按当前阶段保存到右侧进度记录，最多 500 字。</p>
+<textarea id="note-input" maxlength="500" aria-label="填写对当前评审阶段的建议" placeholder="例如：保留 01 的轮廓，但把中间的开口放宽……"></textarea>
+<div class="controls"><button type="button" id="save-note">记录建议</button></div>
+</section>
 <p id="status" role="status"></p>
 </section>
 <aside id="timeline" aria-labelledby="timeline-title"><h2 id="timeline-title">进度记录</h2><ol id="events"></ol></aside>
@@ -185,7 +193,7 @@ function render() {
     const row = el('li');
     const clock = el('time',new Date(event.time).toLocaleString());
     clock.dateTime = event.time;
-    const description = stages[event.stage] + ' · ' + (event.kind === 'decision' ? '确认 ' + event.choice.name : '更新');
+    const description = stages[event.stage] + ' · ' + (event.kind === 'decision' ? '确认 ' + event.choice.name : '建议');
     row.append(clock, el('strong',description));
     if (event.message) row.append(el('p',event.message));
     return row;
@@ -232,6 +240,27 @@ document.querySelectorAll('[data-surface-choice]').forEach(button => button.addE
   render();
 }));
 byId('refresh').addEventListener('click', () => refresh(true));
+byId('save-note').addEventListener('click', async () => {
+  const input = byId('note-input');
+  const message = input.value.trim();
+  if (!message) {
+    byId('status').textContent = '先写下你的建议。';
+    input.focus();
+    return;
+  }
+  const button = byId('save-note');
+  button.disabled = true;
+  try {
+    await get('/api/note', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({stage:active,message})});
+    input.value = '';
+    byId('status').textContent = '建议已保存到进度记录。';
+    await refresh(true);
+  } catch (error) {
+    byId('status').textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
 byId('approve').addEventListener('click', async () => {
   if (!canApprove()) return;
   const selected = active === 'final' ? state.decisions.color : candidates.options[active].find(item => item.id === checked);
