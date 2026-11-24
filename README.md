@@ -33,7 +33,7 @@ npx skills add webkubor/logo-brand-designer
 2. **定色。** 让同一款轮廓在深浅背景上比较色彩，记录最终色值和渐变定义。
 3. **验收。** 实际渲染检查透明画布、留白和小图可辨性。确认后交付标志、字标组合及所需图标，在产品里核对显示。
 
-[技能说明](SKILL.md) · [离线评审页生成方法](references/reuse.md) · [更新记录](CHANGELOG.md)
+[技能说明](SKILL.md) · [离线评审页](references/reuse.md) · [本地评审工作台](references/workbench.md) · [更新记录](CHANGELOG.md)
 
 ## 分享你的作品
 

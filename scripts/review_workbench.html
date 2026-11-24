@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>本地 Logo 评审</title>
+<style>
+:root{color-scheme:light;color:#232232;background:#f4f2f8;font:16px/1.55 system-ui,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+main{width:min(1140px,calc(100% - 32px));margin:auto;padding:32px 0 60px}
+header{border-bottom:1px solid #ded9e5;padding-bottom:16px;margin-bottom:16px}
+h1,h2,h3,p{margin:0 0 12px}
+h1{font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:-.05em}
+h2{font-size:1.3rem}h3{font-size:1rem}
+.muted{color:#5e566a}
+nav,.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
+button,input{font:inherit}
+button{border:1px solid #aaa0be;background:white;color:#282035;padding:7px 12px;border-radius:7px;min-height:42px;cursor:pointer}
+button[aria-pressed="true"],.primary{background:#51398d;color:white;border-color:#51398d}
+button:disabled{opacity:.58;cursor:default}
+button:focus-visible,input:focus-visible{outline:2px solid #51398d;outline-offset:3px}
+#panel{border:1px solid #ddd6e5;border-radius:12px;background:white;padding:18px}
+#choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(245px,100%),1fr));gap:12px}
+label.card{display:block;border:1px solid #ded9e5;border-radius:9px;overflow:hidden;cursor:pointer}
+label.card:has(input:checked){border-color:#51398d;box-shadow:inset 0 0 0 1px #51398d}
+.card .copy{padding:11px 14px}.copy h3{display:inline;font-weight:700}
+.card .copy p{margin:7px 0 0;color:#5e566a;font-size:.9rem}
+.swatch{height:108px;display:grid;place-items:center;overflow:hidden;position:relative}
+.swatch img{width:clamp(95px,74%,204px);height:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-53%)}
+.light{background:#fff}.dark{background:#11121a}
+#timeline{margin-top:27px}
+#events{list-style:none;margin:0;padding:0}
+#events li{border-top:1px solid #ded9e5;padding:10px 0}
+#events time{color:#5e566a;font-size:.875rem;margin-right:8px}
+#status{color:#6c3488;min-height:1.55em}
+</style>
+</head>
+<body>
+<main>
+<header><h1 id="title">本地 Logo 评审</h1><p class="muted">查看进度、比较候选，保存每一步的决定。</p></header>
+<nav aria-label="评审阶段">
+<button type="button" data-stage="shape">形态</button>
+<button type="button" data-stage="color">配色</button>
+<button type="button" data-stage="final">最终确认</button>
+</nav>
+<section id="panel" aria-labelledby="stage-title">
+<h2 id="stage-title"></h2>
+<p id="summary" class="muted"></p>
+<div id="choices"></div>
+<div class="controls">
+<button type="button" id="refresh">刷新候选</button>
+<button type="button" class="primary" id="approve">确认当前方案</button>
+</div>
+<p id="status" role="status"></p>
+</section>
+<section id="timeline"><h2>进度记录</h2><ol id="events"></ol></section>
+</main>
+<script>
+const stages = {shape:'形态', color:'配色', final:'最终确认'};
+const byId = id => document.getElementById(id);
+let active = 'shape';
+let state = null;
+let candidates = {options:{shape:[],color:[]},errors:{}};
+let checked = '';
+let loading = false;
+
+const el = (tag, value) => {
+  const item = document.createElement(tag);
+  if (value) item.textContent = value;
+  return item;
+};
+const current = (stage, choice) => candidates.options[stage].some(item => item.id === choice?.id && item.sha === choice?.sha);
+
+function preview(item, pick, chosen) {
+  const card = el(pick ? 'label' : 'article');
+  card.className = 'card';
+  for (const tone of ['light','dark']) {
+    const swatch = el('div');
+    swatch.className = 'swatch ' + tone;
+    const image = el('img');
+    image.src = item[tone];
+    image.alt = item.name + (tone === 'light' ? ' 浅底' : ' 深底');
+    swatch.append(image);
+    card.append(swatch);
+  }
+  const copy = el('div');
+  copy.className = 'copy';
+  if (pick) {
+    const radio = el('input');
+    radio.type = 'radio';
+    radio.name = 'candidate';
+    radio.value = item.id;
+    radio.checked = chosen;
+    radio.addEventListener('change', () => { checked = item.id; byId('approve').disabled = !canApprove(); });
+    copy.append(radio);
+  }
+  copy.append(el('h3', item.name));
+  if (item.rationale) copy.append(el('p', item.rationale));
+  card.append(copy);
+  return card;
+}
+
+function canApprove() {
+  if (!state) return false;
+  const shape = current('shape', state.decisions.shape);
+  const color = current('color', state.decisions.color);
+  if (active === 'final') return shape && color && !state.decisions.final;
+  return !!candidates.options[active].find(item => item.id === checked) && (active === 'shape' || shape);
+}
+
+function render() {
+  if (!state) return;
+  byId('title').textContent = state.title;
+  byId('stage-title').textContent = stages[active];
+  document.querySelectorAll('[data-stage]').forEach(button => {
+    const key = button.dataset.stage;
+    button.setAttribute('aria-pressed', String(key === active));
+    const approved = key === 'final' ? state.decisions.final && current('shape',state.decisions.shape) && current('color',state.decisions.color) : current(key,state.decisions[key]);
+    button.textContent = stages[key] + (approved ? ' ✓' : '');
+  });
+  const shape = state.decisions.shape;
+  const color = state.decisions.color;
+  let message = '查看深浅底效果，选择你认可的候选。';
+  if (active === 'color' && !current('shape',shape)) message = '请先确认当前版本的形态。';
+  if (active === 'final') {
+    message = '确认后会保存选中的形态和配色，供后续交付引用。';
+    if (shape || color) message += ' 形态：' + (shape?.name || '待确认') + '，配色：' + (color?.name || '待确认') + '。';
+    if (state.decisions.final && current('shape',shape) && current('color',color)) message = '已定稿：' + state.decisions.final.name + '。';
+  }
+  byId('summary').textContent = candidates.errors[active] || message;
+  const chosen = active === 'final' ? candidates.options.color.filter(item => current('color',color) && item.id === color.id) : candidates.options[active];
+  const cards = chosen.map(item => preview(item, active !== 'final', item.id === checked));
+  byId('choices').replaceChildren(...(cards.length ? cards : [el('p','当前阶段暂无候选。')]));
+  byId('approve').textContent = active === 'final' ? '确认最终方案' : '确认' + stages[active];
+  byId('approve').disabled = !canApprove();
+  byId('events').replaceChildren(...[...state.events].reverse().map(event => {
+    const row = el('li');
+    const clock = el('time',new Date(event.time).toLocaleString());
+    clock.dateTime = event.time;
+    const description = stages[event.stage] + ' · ' + (event.choice?.name || event.message);
+    row.append(clock, document.createTextNode(description));
+    return row;
+  }));
+}
+
+async function get(path, options) {
+  const response = await fetch(path, options);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error);
+  return data;
+}
+async function refresh(force=false) {
+  if (loading) return;
+  loading = true;
+  try {
+    const newest = await get('/api/state');
+    if (force || !state || state.revision !== newest.revision) {
+      candidates = await get('/api/options');
+      state = newest;
+      render();
+    }
+  } catch (error) {
+    byId('status').textContent = error.message;
+  } finally {
+    loading = false;
+  }
+}
+
+document.querySelectorAll('[data-stage]').forEach(button => button.addEventListener('click', () => {
+  active = button.dataset.stage;
+  checked = state?.decisions[active]?.id || '';
+  byId('status').textContent = '';
+  render();
+}));
+byId('refresh').addEventListener('click', () => refresh(true));
+byId('approve').addEventListener('click', async () => {
+  if (!canApprove()) return;
+  const selected = active === 'final' ? state.decisions.color : candidates.options[active].find(item => item.id === checked);
+  try {
+    byId('approve').disabled = true;
+    await get('/api/decisions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({stage:active,candidate:selected.id,sha:selected.sha,revision:state.revision})});
+    byId('status').textContent = '已保存。';
+  } catch (error) {
+    byId('status').textContent = error.message;
+  }
+  await refresh(true);
+});
+refresh(true);
+setInterval(refresh,2000);
+</script>
+</body>
+</html>

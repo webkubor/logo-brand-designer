@@ -23,7 +23,7 @@ You can also clone this repository and run `./install.sh`. The offline review ge
 
 Ask your agent to use **logo-brand-designer**, inspect the product's brand material, show monochrome directions, then explore color on the selected shape. Approve the design after seeing the mark on light and dark backgrounds and at small sizes.
 
-[Skill instructions](SKILL.md) · [Offline review guide](references/reuse.md) · [Changelog](CHANGELOG.md)
+[Skill instructions](SKILL.md) · [Offline review guide](references/reuse.md) · [Local review workbench](references/workbench.md) · [Changelog](CHANGELOG.md)
 
 ## Share your work
 
