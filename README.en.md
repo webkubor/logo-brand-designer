@@ -2,7 +2,16 @@
 
 An AI agent skill for designing and reviewing brand marks, wordmarks, and derived app icons. It asks the agent to inspect existing brand assets, test distinctiveness, document color sources, and review actual renders before delivery.
 
-[中文说明](README.md) · [Skill instructions](SKILL.md) · [Example](examples/cortexos/)
+[Website](https://webkubor.github.io/logo-brand-designer/en/) · [中文说明](README.md) · [Skill instructions](SKILL.md)
+
+## Real projects
+
+| Mark | Project | How it was designed |
+|---|---|---|
+| <img src="docs/assets/nativecrew.png" width="72" alt="NativeCrew mark"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew), a DSH agent workbench | Layered orange color follows one silhouette. The transparent icon ships with the plugin. |
+| <img src="docs/assets/museav-music-light.svg" width="96" alt="MuseAV Music mauve waveform mark"> | [MuseAV Music](https://www.museav.top/ecosystem), a music release workbench | A monochrome waveform came first, followed by a mauve palette. Light and dark SVGs are used in the workbench and tab icon. |
+
+See the [CortexOS concept gallery](examples/cortexos/) for five exploratory designs. If you used the skill, [submit your project](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml) to the [community showcase](https://webkubor.github.io/logo-brand-designer/showcase/).
 
 ## Install
 

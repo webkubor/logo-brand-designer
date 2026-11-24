@@ -126,6 +126,8 @@ url: https://github.com/webkubor/logo-brand-designer
 5. 在提交候选前执行下文视觉模型审核；模型判断与实际图像冲突时复核，不虚构模型能力、结果或身份。记录关键判断、未验证项以及淘汰原因。
 6. 用户确认最终设计后才把它写成品牌真源并接入产品、同步组织头像或发布；候选、个人推荐与用户批准必须明确区分。已有用户拒绝的方案不得因为旧目标而重新上线。
 
+用户想公开推广已完成的 Logo 时，提供[案例提交入口](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml)。提交者可自行填写公开的项目链接、Logo 图片直链和一句话简介。符合表单要求的公开提交会显示在[社区展台](https://webkubor.github.io/logo-brand-designer/showcase/)，提交者可关闭对应 Issue 移除展示。
+
 ## 配色门槛：颜色先回答功能问题
 
 「看起来有品位」不是配色理由。墨黑+暖白+一点橙、蓝渐变、莫兰迪，本身都只是调色盘，能套到任何产品上就过不了换名测试。

@@ -4,7 +4,7 @@
 
 # logo-brand-designer
 
-[English](README.en.md) · [更新记录](CHANGELOG.md) · [Agent 索引](llms.txt) · [触发边界用例](evals/evals.json)
+[官网](https://webkubor.github.io/logo-brand-designer/) · [English](README.en.md) · [更新记录](CHANGELOG.md) · [Agent 索引](llms.txt) · [触发边界用例](evals/evals.json)
 
 **让 AI Agent 做出真正的 logo，而不是一个发光的圆角方块。**
 
@@ -17,6 +17,15 @@
 </div>
 
 ---
+
+## 实际设计案例
+
+| 标识 | 产品 | 设计与落地 |
+|---|---|---|
+| <img src="docs/assets/nativecrew.png" width="72" alt="NativeCrew 透明底陶橙标识"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew) · DSH 多 Agent 团队工作台 | 先定一个完整的轮廓，再用陶橙渐变和宽幅叠色做层次。已用于插件图标。 |
+| <img src="docs/assets/museav-music-light.svg" width="96" alt="MuseAV Music 暮紫音波标识"> | [MuseAV Music](https://www.museav.top/ecosystem) · Suno 作品整理与发行 | 先选 01B 音波形态，再选 02 暮紫。用同一个轮廓做深浅两版 SVG，已接入顶栏与浏览器标签页。 |
+
+用这个 Skill 设计过 Logo？可以[提交你的项目](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml)。项目名称、Logo、简介和公开链接会同步到[社区展台](https://webkubor.github.io/logo-brand-designer/showcase/)，访客可以直接打开你的项目。
 
 ## 它解决什么问题
 

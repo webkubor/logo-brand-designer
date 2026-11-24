@@ -1,0 +1,41 @@
+name: 提交 Logo 作品 / Submit a logo
+description: 将你用 logo-brand-designer 完成的项目分享至官网展台。
+title: "[作品] "
+labels: [showcase-submission]
+body:
+  - type: input
+    id: project
+    attributes:
+      label: 项目名 / Project name
+      placeholder: My project
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: 项目公开链接 / Project URL
+      placeholder: https://example.com
+    validations:
+      required: true
+  - type: input
+    id: logo
+    attributes:
+      label: Logo 图片直链 / Logo image URL
+      description: 提供公开的 HTTPS 图片直链，例如 GitHub raw URL。链接会显示在展台。
+      placeholder: https://raw.githubusercontent.com/example/project/main/logo.svg
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 一句话介绍 / One-line description
+      description: 说清项目能做什么，建议 120 字以内。
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: 自愿公开 / Consent
+      options:
+        - label: 我用过 logo-brand-designer，拥有展示授权，并同意在公开展台展示这些信息。 / I used the skill, have permission to share this work, and agree to public display.
+          required: true
