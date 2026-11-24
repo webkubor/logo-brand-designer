@@ -168,6 +168,8 @@ python3 "$SKILL_DIR/scripts/build_review.py" --manifest "$DELIVERY_DIR/manifest.
 
 脚本只做结构检查（含 SVG 正方形、title/aria、安全子集及引用）；生成成功不等于像素透明或视觉验收通过。真实截图另存交付目录 `screenshots/`，说明来源页面/渲染命令、素材版本、背景/尺寸与实际测试范围，保留 HTML、manifest 和素材。未截图、未测像素或工具失败如实写明，不拿已有图当截图。
 
+用户需要实时看进度、在页面选择方案或保存分阶段决定时，使用[本地 Logo 评审工作台](references/workbench.md)。Agent 更新进度并提供候选，品牌方分阶段确认。
+
 ## 派生应用图标：对比度要按真实相邻面测
 
 给标志换底色或加底板时，**每个形状分别与它实际紧邻的面**测对比度，不要拿形状和不相邻的固定色比较。
