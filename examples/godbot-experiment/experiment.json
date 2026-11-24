@@ -1,0 +1,77 @@
+{
+  "case": "Godbot 标识设计实验",
+  "project_source": "https://github.com/renjiegod/dsh-godbot",
+  "date": "2026-11-24",
+  "stage": "形态与配色探索，尚未定稿",
+  "userDecisions": [
+    "No mascot.",
+    "Do not reuse any elements from the existing logo.",
+    "Apply color treatments in the blue-to-purple range."
+  ],
+  "designBrief": {
+    "product": "多 Agent 协作工作台：支持派工、结果复核和原生会话接管。",
+    "approach": "从抽象形态开始；避开设备、角色、字母和网络图示。"
+  },
+  "tool": "image_gen.imagegen",
+  "files": {
+    "shapeExploration": "assets/shape-exploration.png",
+    "colorExploration": "assets/color-exploration.png"
+  },
+  "colorDirections": [
+    {
+      "candidate": "01",
+      "promptHex": [
+        "#728BFF",
+        "#455BDA"
+      ],
+      "status": "suggested direction; rendered values not sampled or approved"
+    },
+    {
+      "candidate": "02",
+      "promptHex": [
+        "#426DE0",
+        "#7A4FDB"
+      ],
+      "status": "suggested direction; rendered values not sampled or approved"
+    },
+    {
+      "candidate": "03",
+      "promptHex": [
+        "#4338A8",
+        "#8156E8"
+      ],
+      "status": "suggested direction; rendered values not sampled or approved"
+    }
+  ],
+  "review": {
+    "iteration1": "第一轮淘汰：候选 01 像箭头，02 像字母，03 像通用链环。",
+    "iteration2": {
+      "01": "目前最有辨识度；需检查小尺寸下的内凹口。",
+      "02": "两块形态关系清晰；需排除通用链接或环形联想。",
+      "03": "接近 C 形字母，优先级较低，可重画。"
+    },
+    "selfAssessment": {
+      "01": "较稳但容易像云/山形",
+      "02": "记忆点较强但可能像 A/K 或分流路径",
+      "03": "偏通用同步/链路图标"
+    },
+    "independentBlindReview": {
+      "model": "gpt-6.1-terra",
+      "recommendation": "02 修改后优先保留，01 修改后复看，03 淘汰",
+      "limitation": "仅看拼图裁切并缩放；未做实际 16×16 宿主渲染；没有旧标识图供相似度比较"
+    },
+    "disagreement": "初评倾向 01，独立盲评倾向 02；尚无作者选择。"
+  },
+  "notDone": [
+    "尚未选定形态",
+    "尚无正式 SVG",
+    "尚无获确认的品牌色 token",
+    "尚未获作者签字",
+    "尚未接入产品"
+  ],
+  "feedback": {
+    "ui": "index.html has free-text suggestion, save-local and copy actions",
+    "storage": "current browser localStorage only; no network upload",
+    "maxLength": 500
+  }
+}
