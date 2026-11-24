@@ -9,7 +9,7 @@
 | Logo | 产品 | 设计过程 |
 |---|---|---|
 | <img src="docs/assets/nativecrew.png" width="80" alt="NativeCrew 的陶橙标识"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew) · DSH 多 Agent 团队工作台 | 先确定单一外轮廓，再用宽幅陶橙色层做出深浅。成品已用于插件图标。 |
-| <img src="docs/assets/museav-music-light.svg" width="116" alt="MuseAV Music 的暮紫音波标识"> | [MuseAV Music](https://music.museav.top/) · Suno 作品整理与发行工作台 | 在黑白稿选定 01B 音波，接着在深浅背景比较配色。定稿为 02 暮紫，已用于工作台顶栏与标签页。 |
+| <img src="docs/assets/museav-music-light.svg" width="116" alt="仙灵music 的暮紫音波标识"> | [仙灵music](https://music.museav.top/) · Suno 作品整理与发行工作台 | 在黑白稿选定 01B 音波，接着在深浅背景比较配色。定稿为 02 暮紫，已用于工作台顶栏与标签页。 |
 
 这些标识供案例展示，品牌权利归各产品所有者。
 

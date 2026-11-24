@@ -9,7 +9,7 @@ An open-source logo design skill for beginners using Codex, Claude Code, or othe
 | Mark | Product | Design |
 |---|---|---|
 | <img src="docs/assets/nativecrew.png" width="80" alt="NativeCrew orange mark"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew), a DSH agent workbench | Layered orange follows one continuous outline. The mark ships as the plugin icon. |
-| <img src="docs/assets/museav-music-light.svg" width="116" alt="MuseAV Music mauve waveform"> | [MuseAV Music](https://music.museav.top/), a music release workbench | A monochrome waveform came first, followed by a mauve palette. Light and dark SVGs are used in the workbench and browser tab. |
+| <img src="docs/assets/museav-music-light.svg" width="116" alt="仙灵music mauve waveform"> | [仙灵music](https://music.museav.top/), a music release workbench | A monochrome waveform came first, followed by a mauve palette. Light and dark SVGs are used in the workbench and browser tab. |
 
 Product marks appear here as case studies. Their rights remain with the respective product owners.
 
