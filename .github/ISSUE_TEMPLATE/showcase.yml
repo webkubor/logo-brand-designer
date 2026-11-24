@@ -36,6 +36,7 @@ body:
     id: consent
     attributes:
       label: 自愿公开 / Consent
+      description: 请阅读[法律声明与展示授权](https://webkubor.github.io/logo-brand-designer/legal/)。
       options:
         - label: 我用过 logo-brand-designer，拥有展示授权，并同意在公开展台展示这些信息。 / I used the skill, have permission to share this work, and agree to public display.
           required: true
