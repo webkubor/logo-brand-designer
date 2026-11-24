@@ -1,34 +1,32 @@
 # logo-brand-designer
 
-An AI agent skill for designing and reviewing brand marks, wordmarks, and derived app icons. It asks the agent to inspect existing brand assets, test distinctiveness, document color sources, and review actual renders before delivery.
+An open-source logo design skill for Codex, Claude Code, and other tools that support Agent Skills. Compare silhouettes, approve a palette, and deliver transparent SVGs, browser icons, and an offline review page.
 
-[Website](https://webkubor.github.io/logo-brand-designer/en/) · [中文说明](README.md) · [Skill instructions](SKILL.md)
+[Website](https://webkubor.github.io/logo-brand-designer/en/) · [Community showcase](https://webkubor.github.io/logo-brand-designer/showcase/) · [中文](README.md)
 
-## Real projects
+## Shipped product marks
 
-| Mark | Project | How it was designed |
+| Mark | Product | Design |
 |---|---|---|
-| <img src="docs/assets/nativecrew.png" width="72" alt="NativeCrew mark"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew), a DSH agent workbench | Layered orange color follows one silhouette. The transparent icon ships with the plugin. |
-| <img src="docs/assets/museav-music-light.svg" width="96" alt="MuseAV Music mauve waveform mark"> | [MuseAV Music](https://www.museav.top/ecosystem), a music release workbench | A monochrome waveform came first, followed by a mauve palette. Light and dark SVGs are used in the workbench and tab icon. |
+| <img src="docs/assets/nativecrew.png" width="80" alt="NativeCrew orange mark"> | [NativeCrew](https://www.npmjs.com/package/@dsh-plugins/nativecrew), a DSH agent workbench | Layered orange follows one continuous outline. The mark ships as the plugin icon. |
+| <img src="docs/assets/museav-music-light.svg" width="116" alt="MuseAV Music mauve waveform"> | [MuseAV Music](https://www.museav.top/ecosystem), a music release workbench | A monochrome waveform came first, followed by a mauve palette. Light and dark SVGs are used in the workbench and browser tab. |
 
-See the [CortexOS concept gallery](examples/cortexos/) for five exploratory designs. If you used the skill, [submit your project](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml) to the [community showcase](https://webkubor.github.io/logo-brand-designer/showcase/).
+Product marks appear here as case studies. Their rights remain with the respective product owners.
 
-## Install
+## Install and use
 
 ```bash
-git clone https://github.com/webkubor/logo-brand-designer.git
-cd logo-brand-designer
-./install.sh
+npx skills add webkubor/logo-brand-designer
 ```
 
-Run `./install.sh --list` to inspect destinations without installing. The installer supports several local agent skill directories; see the Chinese README for options.
+You can also clone this repository and run `./install.sh`. The offline review generator uses the Python 3.9+ standard library.
 
-## Use
+Ask your agent to use **logo-brand-designer**, inspect the product's brand material, show monochrome directions, then explore color on the selected shape. Approve the design after seeing the mark on light and dark backgrounds and at small sizes.
 
-Ask your agent: “Use logo-brand-designer to design a logo for this project. Inspect the existing brand assets and colors, show distinct directions with a mark and wordmark, and provide a review page and real screenshots.”
+[Skill instructions](SKILL.md) · [Offline review guide](references/reuse.md) · [Changelog](CHANGELOG.md)
 
-For an existing brand, ask for a derived icon and specify the host application. Check its actual rendering method, theme, background and size. The review manifest accepts an optional `iconAsset` to preview the icon at 16 and 24 pixels.
+## Share your work
 
-The review generator uses Python 3.9+ and the standard library. It checks asset structure; it does not establish visual quality, pixel transparency, or legibility. Verify those with real rendered screenshots and visual review.
+[Submit a project](https://github.com/webkubor/logo-brand-designer/issues/new?template=showcase.yml) with its public link, logo image, and a short description. Public submissions appear in the [community showcase](https://webkubor.github.io/logo-brand-designer/showcase/).
 
-MIT license.
+Code and documentation are available under [MIT](LICENSE).
