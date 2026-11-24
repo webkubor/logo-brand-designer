@@ -103,3 +103,14 @@ async function loadShowcase(grid) {
 
 const showcase = document.querySelector('[data-community]');
 if (showcase) loadShowcase(showcase);
+
+const journey = document.querySelector('[data-journey]');
+if (journey) {
+  const controls = [...document.querySelectorAll('[data-preview-mode]')];
+  for (const control of controls) {
+    control.addEventListener('click', () => {
+      journey.dataset.preview = control.dataset.previewMode;
+      for (const button of controls) button.setAttribute('aria-pressed', String(button === control));
+    });
+  }
+}

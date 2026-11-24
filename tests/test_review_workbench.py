@@ -1,6 +1,7 @@
 """核验候选变更与跨阶段选择是否保留正确的审核证据。"""
 
 import json
+import base64
 import sys
 import tempfile
 import unittest
@@ -65,6 +66,19 @@ class WorkbenchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "候选素材已更新"):
             self.choose("final", "mauve")
         self.assertNotIn("final", self.review.state["decisions"])
+
+    def test_raster_candidate_can_be_reviewed_but_requires_svg_for_delivery(self):
+        pixel = base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR4nGNg+M/wHwAEAQH/4YN+3QAAAABJRU5ErkJggg=="
+        )
+        (self.root / "raster.png").write_bytes(pixel)
+        manifest = json.loads(self.color.read_text())
+        manifest["projects"][0]["asset"] = "raster.png"
+        self.color.write_text(json.dumps(manifest))
+        self.choose("shape", "01")
+        self.choose("color", "mauve")
+        with self.assertRaisesRegex(ValueError, "SVG"):
+            self.choose("final", "mauve")
 
 
 if __name__ == "__main__":

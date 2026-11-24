@@ -90,6 +90,10 @@ class Review:
                                      and item["sha"] == payload.get("sha")), None)
                 if selected is None:
                     raise ValueError("候选素材已更新。刷新评审后再确认。")
+                if stage == "final" and not all(
+                    selected[tone].startswith("data:image/svg+xml;") for tone in ("light", "dark")
+                ):
+                    raise ValueError("请先提供浅底和深底所用的 SVG，再确认定稿。")
                 choice = {key: selected[key] for key in ("id", "name", "sha")}
                 if choices.get(stage) != choice:
                     for downstream in STAGES[STAGES.index(stage) + 1:]:
