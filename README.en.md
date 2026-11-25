@@ -27,7 +27,7 @@ Ask your agent to use **logo-brand-designer**, inspect the product's brand mater
 
 ## Process experiment
 
-- [Godbot logo experiment](examples/godbot-experiment/) (Chinese review page): a local commission case study; not final and not published on the website.
+- [Godbot logo experiment](https://github.com/webkubor/logo-brand-designer/tree/main/examples/godbot-experiment) (Chinese review page): a local commission case study; not final and not published on the website.
 
 ## Share your work
 

@@ -37,7 +37,7 @@ npx skills add webkubor/logo-brand-designer
 
 ## 流程实验
 
-- [Godbot 标识设计实验](examples/godbot-experiment/)：委托案例的本地候选评审页与过程记录，尚未定稿；此页不在官网公开。
+- [Godbot 标识设计实验](https://github.com/webkubor/logo-brand-designer/tree/main/examples/godbot-experiment)：委托案例的本地候选评审页与过程记录，尚未定稿；此页不在官网公开。
 
 ## 分享你的作品
 

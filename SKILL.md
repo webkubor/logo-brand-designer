@@ -1,7 +1,7 @@
 ---
 name: logo-brand-designer
 description: "为项目设计或完善品牌标识，交付 design token、理念、透明底 1:1 SVG、离线评审页与真实截图。用于做 logo、重设计、沿用既有 token、主题适配、品牌色核对、logo 验收及保留可复用评审流程；也用于已有定稿 logo 后派生应用图标（侧栏、插件列表、favicon 等宿主槽位）。优先遵循用户输入，核实来源，实际渲染深浅背景的 32px 版本；拒绝平台通用几何图形，候选须过「一个想法/换名测试/记忆点」门槛，交付前必须经视觉模型审核。触发词: logo, 品牌标识, 标识设计, 品牌色, 配色核对, 应用图标, 派生图标, 侧栏图标, 深色侧栏, favicon, 评审页, brand identity"
-version: 0.7.2
+version: 0.8.0
 license: MIT
 author: webkubor
 category: design
