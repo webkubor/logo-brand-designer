@@ -14,6 +14,8 @@ You can also clone this repository and run `./install.sh`. The offline review ge
 
 Ask your agent to use **logo-brand-designer**, inspect the product's brand material, show monochrome directions, then explore color on the selected shape. Approve the design after seeing the mark on light and dark backgrounds and at small sizes.
 
+**Optional interactive review.** Ask for an interactive review page to switch projects and compare current and proposed artwork across backgrounds and sizes in one offline HTML file. Ask for assets only when you want the files.
+
 [Skill instructions](SKILL.md) · [Offline review guide](references/reuse.md) · [Local review workbench](references/workbench.md) · [Changelog](CHANGELOG.md)
 
 Code and documentation are available under [MIT](LICENSE).

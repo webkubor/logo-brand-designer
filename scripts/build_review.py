@@ -9,6 +9,7 @@ import json
 import math
 import re
 import struct
+from string import Template
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
@@ -30,6 +31,12 @@ ATTRS = set("id role aria-label aria-labelledby aria-hidden viewBox width height
 IDENT = r"[A-Za-z_][A-Za-z0-9_.:-]*"
 LOCAL_URL = re.compile(r"url\(\s*(['\"]?)#(" + IDENT + r")\1\s*\)", re.I)
 COLOR = re.compile(r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\Z")
+WORKFLOWS = {
+    "brand": {"audit": "核对现用", "shape": "黑白轮廓", "color": "锁形配色",
+              "application": "应用验证", "release": "定稿上线"},
+    "app": {"layout": "页面布局", "menu": "菜单导航", "interaction": "界面交互",
+            "motion": "动效", "icon": "标识与图标", "acceptance": "整体验收"},
+}
 LIMITATION = ("仅做结构检查；未解码/渲染像素，未验证透明度、留白、非空图、"
               "token 与实际颜色一致性或 32px 可辨性。需要另行真实渲染并目视验收。")
 
@@ -191,7 +198,7 @@ def raster_size(data, suffix, label):
     raise ReviewError(f"{label} 缺少 WebP 尺寸头")
 
 
-def load_asset(root, value, label):
+def load_asset(root, value, label, evidence=False):
     path = local_path(root, value, label)
     require(path.stat().st_size <= MAX_FILE, f"{label} 超过 8 MiB")
     data = path.read_bytes()
@@ -199,13 +206,16 @@ def load_asset(root, value, label):
     require(suffix in (".svg", ".png", ".webp"), f"{label} 仅支持 SVG/PNG/WebP")
     svg = None
     if suffix == ".svg":
+        require(not evidence, f"{label} 阶段截图仅支持 PNG/WebP")
         svg, checks = check_svg(data, label)
         mime = "image/svg+xml"
     else:
         width, height = raster_size(data, suffix, label)
-        require(width > 0 and width == height, f"{label} 位图必须为正方形")
+        require(width > 0 and height > 0, f"{label} 位图尺寸必须大于零")
+        require(evidence or width == height, f"{label} 位图必须为正方形")
         checks = {"format": suffix[1:].upper(), "width": width, "height": height,
-                  "checks": "文件头及正方尺寸通过；位图不适用 SVG title/aria 检查，不能替代最终 SVG"}
+                  "checks": "文件头和尺寸通过" if evidence else
+                  "文件头及正方尺寸通过；位图不适用 SVG title/aria 检查，不能替代最终 SVG"}
         mime = "image/" + suffix[1:]
     return {"path": value, "filename": path.name, "mime": mime, "svg": svg,
             "dataUri": f"data:{mime};base64," + base64.b64encode(data).decode("ascii"),
@@ -236,7 +246,45 @@ def load_sources(project, root):
     return result
 
 
-def load_manifest(path):
+def load_review_progress(project, label, root):
+    progress = project.get("reviewProgress")
+    if progress is None:
+        return None
+    require(isinstance(progress, dict), f"{label}.reviewProgress 必须是对象")
+    workflow = text(progress.get("workflow", "brand"), f"{label}.reviewProgress.workflow")
+    require(workflow in WORKFLOWS, f"{label}.reviewProgress.workflow 只支持 brand 或 app")
+    stages = WORKFLOWS[workflow]
+    included = progress.get("include", list(stages))
+    require(isinstance(included, list) and included and all(isinstance(key, str) for key in included)
+            and len(included) == len(set(included)) and set(included).issubset(stages),
+            f"{label}.reviewProgress.include 必须是该流程的非重复阶段数组")
+    current = text(progress.get("current"), f"{label}.reviewProgress.current")
+    require(current in included, f"{label}.reviewProgress.current 不属于所选阶段")
+    notes = progress.get("notes", {})
+    evidence = progress.get("evidence", {})
+    for field, values in (("notes", notes), ("evidence", evidence)):
+        require(isinstance(values, dict) and set(values).issubset(included),
+                f"{label}.reviewProgress.{field} 包含未选中的阶段")
+    records = []
+    for key, stage in stages.items():
+        if key not in included:
+            continue
+        item = evidence.get(key, {})
+        require(isinstance(item, dict), f"{label}.evidence.{key} 必须是对象")
+        image = load_asset(root, item["image"], f"{label}.evidence.{key}.image",
+                           evidence=True) if "image" in item else None
+        prototype = item.get("prototype")
+        if prototype is not None:
+            require(isinstance(prototype, str) and re.fullmatch(r"https?://[^\s]+", prototype, re.I),
+                    f"{label}.evidence.{key}.prototype 需要 HTTP(S) 链接")
+        records.append({
+            "id": key, "label": stage, "note": text(notes[key], f"{label}.notes.{key}") if key in notes else "",
+            "image": image, "prototype": prototype,
+        })
+    return {"workflow": workflow, "current": current, "stages": records}
+
+
+def load_manifest(path, allow_app_studio=False):
     require(path.stat().st_size <= MAX_FILE, "manifest 超过 8 MiB")
     manifest = json.loads(path.read_text(encoding="utf-8-sig"))
     require(isinstance(manifest, dict), "manifest 必须是 JSON 对象")
@@ -249,9 +297,11 @@ def load_manifest(path):
         ident = text(project.get("id") or name, "project.id/name")
         require(ident not in seen, f"project id 重复：{ident}")
         seen.add(ident)
-        tokens = project.get("tokens")
+        progress = load_review_progress(project, ident, root)
+        app_only = allow_app_studio and progress and progress["workflow"] == "app" and not project.get("asset")
+        tokens = project.get("tokens", {} if app_only else None)
         require(isinstance(tokens, dict), f"{ident}.tokens 必须是对象")
-        require(all(key in tokens for key in TOKEN_NAMES), f"{ident}.tokens 缺少必填 token")
+        require(app_only or all(key in tokens for key in TOKEN_NAMES), f"{ident}.tokens 缺少必填 token")
         for key, value in tokens.items():
             require(isinstance(value, str) and (COLOR.fullmatch(value)
                     or (key == "background" and value == "transparent")),
@@ -260,11 +310,17 @@ def load_manifest(path):
         require(isinstance(token_sources, dict), f"{ident}.tokenSources 必须是对象")
         for key, value in token_sources.items():
             text(value, f"tokenSources.{key}")
-        assets = {"asset": load_asset(root, project.get("asset"), ident + ".asset")}
+        assets = {"asset": None if app_only else load_asset(root, project.get("asset"), ident + ".asset")}
         for key in ("darkAsset", "oldAsset", "iconAsset", "iconDarkAsset"):
             assets[key] = load_asset(root, project[key], ident + "." + key) if project.get(key) is not None else None
         require(not assets["iconDarkAsset"] or assets["iconAsset"], f"{ident}.iconDarkAsset 需要 iconAsset")
+        old_label = project.get("oldAssetLabel")
+        if old_label is not None:
+            old_label = text(old_label, f"{ident}.oldAssetLabel")
+            require(assets["oldAsset"], f"{ident}.oldAssetLabel 需要 oldAsset")
         records.append({"id": ident, "name": name, "tokens": tokens,
+                        "oldAssetLabel": old_label,
+                        "reviewProgress": progress,
                         "tokenSources": {key: token_sources.get(key, "未标注来源，未核验") for key in tokens},
                         "rationale": lines(project.get("rationale"), "rationale"),
                         "userDecisions": lines(project.get("userDecisions"), "userDecisions"),
@@ -303,7 +359,8 @@ const DATA = __PAYLOAD__;
 const root = document.getElementById('projects');
 const bgButtons = [...document.querySelectorAll('[data-background]')];
 const sizeButtons = [...document.querySelectorAll('[data-size]')];
-let background = 'light', size = 32;
+const projectTabs = document.getElementById('project-tabs');
+let background = 'light', size = projectTabs ? 128 : 32;
 function el(tag, value, className) {
   const node = document.createElement(tag);
   if (value !== undefined) node.textContent = value;
@@ -333,8 +390,10 @@ function assetTask(label, asset) {
 }
 function fullTask(p, note) {
   return [
-    '请依据以下完整资料继续处理品牌标识，并保留离线评审页和真实截图。',
+    p.reviewProgress?.workflow === 'app' ? '请依据以下资料继续应用设计，保留真实截图和验证记录。' :
+      '请依据以下完整资料继续处理品牌标识，并保留离线评审页和真实截图。',
     '项目：' + p.name + ' (' + p.id + ')',
+    ...(p.reviewProgress ? p.reviewProgress.stages.map(stage => stage.label + '：' + (stage.note || '未记录')) : []),
     '先调用当次环境能力发现/工具帮助，再按授权选择工具及模型；不得把复制任务当成已调用。',
     '用户已给定/确认（仅来自 manifest.userDecisions；空白不代表批准）：\n' + (p.userDecisions.join('\n') || '未记录'),
     '建议（未获用户确认）：\n' + (p.recommendations.join('\n') || '未记录'),
@@ -369,21 +428,64 @@ async function copyTask(content, status, fallback) {
 const downloadBar = document.getElementById('downloads');
 downloadBar.append(jsonDownload('下载完整 JSON（含内嵌素材）', 'brand-review-bundle.json', DATA),
   jsonDownload('下载原 manifest', 'manifest.json', DATA.manifest));
+function progressView(progress) {
+  const block = el('section', undefined, 'studio-progress');
+  block.setAttribute('aria-label', '设计流程');
+  const heading = el('h3', '设计流程', 'studio-progress-title');
+  const nav = el('div', undefined, 'studio-steps');
+  nav.setAttribute('role', 'group');
+  nav.setAttribute('aria-label', '查看阶段');
+  const note = el('p', undefined, 'studio-step-note');
+  note.setAttribute('aria-live', 'polite');
+  const evidence = el('div', undefined, 'studio-evidence');
+  const allButtons = progress.stages.map(stage => {
+    const item = button(stage.label, () => select(stage));
+    if (stage.id === progress.current) item.setAttribute('aria-current', 'step');
+    return item;
+  });
+  function select(stage) {
+    allButtons.forEach((item, index) => item.setAttribute('aria-pressed',
+      String(progress.stages[index].id === stage.id)));
+    note.textContent = stage.note || '这个阶段还没有记录。';
+    evidence.replaceChildren();
+    if (stage.image) {
+      const preview = el('img');
+      preview.alt = stage.label + '预览';
+      preview.src = stage.image.dataUri;
+      evidence.append(preview);
+    }
+    if (stage.prototype) {
+      const prototype = el('a', '打开原型', 'download');
+      prototype.href = stage.prototype;
+      prototype.target = '_blank';
+      prototype.rel = 'noopener noreferrer';
+      evidence.append(prototype);
+    }
+    evidence.hidden = !stage.image && !stage.prototype;
+  }
+  nav.append(...allButtons);
+  select(progress.stages.find(stage => stage.id === progress.current));
+  block.append(heading, nav, note, evidence);
+  return block;
+}
 const views = [];
 DATA.projects.forEach((p, index) => {
   const section = el('article', undefined, 'project'); section.append(el('h2', p.name));
-  section.append(el('p', 'ID: ' + p.id, 'muted'));
+  const projectId = el('p', 'ID: ' + p.id, 'muted');
+  section.append(projectId);
   const grid = el('div', undefined, 'preview-grid');
   const next = el('figure'), nextCanvas = el('div', undefined, 'canvas'); nextCanvas.dataset.bg = background;
   const nextImg = el('img'); nextImg.alt = p.name + ' 新标识'; nextCanvas.append(nextImg);
-  const caption = el('figcaption'); next.append(nextCanvas, caption); grid.append(next);
+  const caption = el('figcaption'); next.append(nextCanvas, caption);
+  if (!projectTabs) grid.append(next);
   let oldImg = null, oldCanvas = null;
   if (p.assets.oldAsset) {
     const old = el('figure'); oldCanvas = el('div', undefined, 'canvas'); oldCanvas.dataset.bg = background;
     oldImg = el('img'); oldImg.alt = p.name + ' 旧标识'; oldImg.src = p.assets.oldAsset.dataUri;
-    oldCanvas.append(oldImg); old.append(oldCanvas, el('figcaption', '旧图（对照，不推定为已批准规范）')); grid.append(old);
+    oldCanvas.append(oldImg); old.append(oldCanvas, el('figcaption', p.oldAssetLabel || '旧图参考')); grid.append(old);
   } else grid.append(el('p', '首次设计 / 未提供旧图', 'muted'));
-  section.append(grid);
+  if (projectTabs) grid.append(next);
+  if (p.assets.asset) section.append(grid);
   // the derived app icon: the slot a host renders at 16-24px, where a mark
   // that only works large has to be simplified rather than detailed
   if (p.assets.iconAsset) {
@@ -400,7 +502,8 @@ DATA.projects.forEach((p, index) => {
   } else {
     views.push({p, nextImg, nextCanvas, caption, oldImg, oldCanvas});
   }
-  section.append(el('h3', 'Design tokens 与来源'));
+  const detailsStart = el('h3', 'Design tokens 与来源');
+  section.append(detailsStart);
   const tokens = el('div', undefined, 'tokens');
   Object.entries(p.tokens).forEach(([key, value]) => {
     const item = el('div', undefined, 'token');
@@ -439,15 +542,74 @@ DATA.projects.forEach((p, index) => {
   fallback.setAttribute('aria-label', '自动复制失败时的完整任务');
   const status = el('p', '', 'status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   section.append(label, note, button('复制完整任务（含实际素材）', () => copyTask(fullTask(p, note.value), status, fallback)), status, fallback);
+  if (projectTabs) {
+    section.classList.add('studio-project');
+    if (p.reviewProgress) projectId.after(progressView(p.reviewProgress));
+    const panelId = 'project-panel-' + index;
+    section.id = panelId;
+    section.setAttribute('role', 'tabpanel');
+    section.setAttribute('aria-labelledby', 'project-tab-' + index);
+    const info = el('details', undefined, 'studio-details');
+    info.append(el('summary', '设计记录、素材与反馈'));
+    const details = [...section.children].slice([...section.children].indexOf(detailsStart));
+    info.append(...details);
+    section.append(info);
+    const summary = p.rationale[0];
+    if (summary) section.insertBefore(el('p', summary, 'studio-rationale'), info);
+    projectId.hidden = true;
+    const tab = button(p.name, () => selectProject(index));
+    if (p.reviewProgress) {
+      const stage = p.reviewProgress.stages.find(stage => stage.id === p.reviewProgress.current);
+      tab.append(el('span', stage.label, 'studio-tab-stage'));
+      tab.setAttribute('aria-label', p.name);
+    }
+    tab.id = 'project-tab-' + index;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', panelId);
+    if (p.assets.asset) {
+      const thumb = el('img'); thumb.alt = ''; thumb.src = p.assets.asset.dataUri;
+      tab.prepend(thumb);
+    }
+    projectTabs.append(tab);
+  }
   root.append(section);
 });
+function selectProject(index, focus = false) {
+  [...projectTabs.children].forEach((tab, n) => {
+    tab.setAttribute('aria-selected', String(n === index));
+    tab.tabIndex = n === index ? 0 : -1;
+    root.children[n].hidden = n !== index;
+  });
+  const toolbar = document.querySelector('.studio-toolbar');
+  toolbar.hidden = !DATA.projects[index].assets.asset && !DATA.projects[index].assets.iconAsset;
+  if (focus) projectTabs.children[index].focus();
+}
+if (projectTabs) {
+  projectTabs.addEventListener('keydown', event => {
+    const tabs = [...projectTabs.children];
+    const current = tabs.indexOf(event.target);
+    if (current < 0) return;
+    const destinations = {
+      ArrowRight: (current + 1) % tabs.length,
+      ArrowLeft: (current + tabs.length - 1) % tabs.length,
+      Home: 0,
+      End: tabs.length - 1
+    };
+    if (!(event.key in destinations)) return;
+    event.preventDefault();
+    selectProject(destinations[event.key], true);
+  });
+  selectProject(0);
+}
 function refresh() {
   views.forEach(v => {
     const dark = background === 'dark' && v.p.assets.darkAsset;
     const asset = dark || v.p.assets.asset;
-    v.nextImg.src = asset.dataUri; v.nextImg.width = v.nextImg.height = size;
+    if (!asset && !v.iconImg) return;
+    if (asset) v.nextImg.src = asset.dataUri;
+    v.nextImg.width = v.nextImg.height = size;
     v.nextImg.style.width = v.nextImg.style.height = size + 'px'; v.nextCanvas.dataset.bg = background;
-    v.caption.textContent = '新图 · ' + (dark ? '独立深底版' : '主版本') + ' · ' + size + 'px';
+    v.caption.textContent = (projectTabs ? '新方案' : '新图 · ' + (dark ? '独立深底版' : '主版本')) + ' · ' + size + 'px';
     if (v.oldImg) {v.oldImg.style.width = v.oldImg.style.height = size + 'px'; v.oldCanvas.dataset.bg = background;}
     if (v.iconImg) {
       const icon = background === 'dark' && v.p.assets.iconDarkAsset || v.p.assets.iconAsset;
@@ -466,7 +628,7 @@ refresh();
 """
 
 
-def build_html(data):
+def build_html(data, layout="document"):
     payload = json.dumps(data, ensure_ascii=True, separators=(",", ":"))
     payload = payload.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     script = JAVASCRIPT.replace("__PAYLOAD__", payload)
@@ -474,6 +636,10 @@ def build_html(data):
     csp = ("default-src 'none'; img-src data:; style-src 'unsafe-inline'; "
            f"script-src 'sha256-{digest}'; connect-src 'none'; font-src 'none'; "
            "object-src 'none'; base-uri 'none'; form-action 'none'")
+    if layout == "studio":
+        template = Path(__file__).with_name("review_studio.html").read_text(encoding="utf-8")
+        return Template(template).substitute(csp=html.escape(csp, quote=True), style=STYLE,
+                                             limitation=html.escape(LIMITATION), script=script)
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="{html.escape(csp, quote=True)}">
@@ -495,6 +661,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True, type=Path, help="JSON; local paths are relative to its directory")
     parser.add_argument("--out", required=True, type=Path, help="standalone .html output (existing assets are never overwritten)")
+    parser.add_argument("--layout", choices=("document", "studio"), default="document",
+                        help="document (default) or the optional interactive studio")
     args = parser.parse_args(argv)
     temporary = None
     try:
@@ -503,13 +671,16 @@ def main(argv=None):
         require(output.suffix.lower() == ".html", "--out 必须为 .html")
         require(not args.out.is_symlink(), "--out 不允许符号链接")
         require(output != manifest_path, "不能覆盖 manifest")
-        data = load_manifest(manifest_path)
+        data = load_manifest(manifest_path, allow_app_studio=args.layout == "studio")
         protected = {local_path(manifest_path.parent, asset["path"], "asset")
                      for project in data["projects"] for asset in project["assets"].values() if asset}
         protected.update(local_path(manifest_path.parent, source["value"], "source")
                          for project in data["projects"] for source in project["sources"] if source["url"] is None)
+        protected.update(local_path(manifest_path.parent, stage["image"]["path"], "stage evidence")
+                         for project in data["projects"] if project["reviewProgress"]
+                         for stage in project["reviewProgress"]["stages"] if stage["image"])
         require(output not in protected, "不能覆盖输入素材或来源文件")
-        result = build_html(data)
+        result = build_html(data, args.layout)
         output.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=output.parent,
                                          prefix=".brand-review-", suffix=".tmp", delete=False) as handle:

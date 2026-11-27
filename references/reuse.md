@@ -25,6 +25,10 @@ python3 "$SKILL_DIR/scripts/build_review.py" \
   --out "$DELIVERY_DIR/review.html"
 ```
 
+要给用户一张按项目切换的新旧对照页，给同一命令加 `--layout studio`。默认的 `document` 保留全文档布局。两种页面都把素材内嵌进单一 HTML 文件。交互评审支持浅底、深底、棋盘背景和 24/32/64/128px。方向键或点按均可切换项目。设计记录、下载与反馈位于下方可展开区。页面无需安装浏览器扩展或启动本地服务；若用户要持续查看进度与提交决定，再选[本地工作台](workbench.md)。
+
+只在用户选择交互评审时为其生成页面；素材结构和实际渲染检查仍独立进行。要标为「现用」，先核对生产页面或发布包实际使用的那一份。
+
 需要 Python 3.9+，没有第三方包。先参考 [manifest-example.json](manifest-example.json) 填真实资料；示例是契约说明，**未附图像和源码占位文件，不能原样运行**。校验失败退出 1，用法错误退出 2，检查通过退出 0；失败不写新的 HTML。若输出位置已有旧页面，失败会保留旧文件，必须根据退出码判断，不得用旧页面声称本次生成通过。`--out` 是调用者明确选择的输出位置，可在 manifest 目录外；只允许 `.html`，不允许覆盖 manifest/素材/来源文件或直接输出到符号链接。
 
 ## Manifest 契约
@@ -43,10 +47,41 @@ python3 "$SKILL_DIR/scripts/build_review.py" \
 | `asset` | 必填本地 `.svg/.png/.webp` 路径；新设计最终交付应为 SVG。 |
 | `darkAsset` | 可选，同格式本地路径；缺省或 null 复用 asset。深底切换加载它；棋盘使用主版本。 |
 | `oldAsset` | 可选，同格式本地路径；缺省或 null 明确显示无旧图，首次设计合法，不虚填旧图。 |
+| `oldAssetLabel` | 可选，需要 `oldAsset`。说明对照图的身份，例如「线上应用现用图标」「上一个配色草案」。未填写时显示「旧图参考」。 |
+| `reviewProgress` | 可选。每个项目的设计流程、所选环节、当前阶段与证据。交互评审页可独立查看每个项目的阶段。 |
 | `iconAsset` | 可选，同格式本地路径；派生图标固定以 24px 和 16px 预览，不受标志尺寸按钮影响。 |
 | `iconDarkAsset` | 可选，同格式本地路径；深底时使用，未提供则使用 `iconAsset`。宿主实际背景和渲染须另行核验。 |
 
 所有本地输入路径以 manifest 目录为根；禁止绝对路径、`..`、Windows 盘符、反斜杠、URL 素材及越界符号链接。单个文件（含 manifest）上限 8 MiB，是评审工具的内存界限。原 JSON 下载保留相对路径，搬迁时须带齐素材；“完整 JSON”另含实际素材 data URI、SVG 全文、SHA-256 和结构检查结果，是离线归档包，并非直接重输给构建器的 manifest。
+
+## 按项目显示设计过程
+
+每个项目可独立设置 `reviewProgress`：
+
+```json
+{
+  "workflow": "app",
+  "include": ["layout", "menu", "interaction", "motion"],
+  "current": "interaction",
+  "notes": {
+    "layout": "确认侧栏布局。",
+    "menu": "主导航保留三个入口。",
+    "interaction": "正在比对菜单展开和键盘顺序。"
+  },
+  "evidence": {
+    "layout": { "image": "screenshots/layout.png" },
+    "interaction": { "prototype": "http://127.0.0.1:4173/" },
+    "motion": { "image": "screenshots/menu-motion.webp" }
+  }
+}
+```
+
+- `brand` 阶段为 `audit` 核对现用、`shape` 黑白轮廓、`color` 锁形配色、`application` 应用验证、`release` 定稿上线。
+- `app` 阶段为 `layout` 页面布局、`menu` 菜单导航、`interaction` 界面交互、`motion` 动效、`icon` 标识与图标、`acceptance` 整体验收。
+- `include` 省略时接入完整流程。可只选择用户委托的环节。阶段说明用于记录事实和下一步，用户确认仍写进 `userDecisions`。
+- 截图支持任意比例 PNG/WebP，动效预览可用动画 WebP。图片内嵌。原型链接必须是 HTTP(S)，仅在用户点击后打开。离线页面可查看已内嵌资料，打开原型需其地址可访问。
+- `studio` 模式可先做应用设计记录。若 `workflow` 为 `app` 且还没进入标识阶段，可以暂缺 `asset` 与 `tokens`。品牌流程和文档式布局仍要求原有素材契约。
+- 单做一个项目传一个条目。批量设计传多个条目，每个项目独立记录阶段，可混用两种工作流。可以提交点击意见时使用本地工作台；它是 Logo 形态和配色的确认工具。
 
 ## 页面能力与验证边界
 
