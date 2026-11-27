@@ -57,6 +57,8 @@ summary{cursor:pointer}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
 .project-case,.card{min-width:0;border:1px solid var(--line);border-radius:8px;padding:15px 17px}
 .project-case>.mark-stage{height:155px;margin-bottom:10px}
+.mark-stage--charcoal{background:#2b2a27;border-radius:8px}
+.mark-stage--charcoal img{width:145px}
 .project-case:first-child>.mark-stage img{width:145px}
 .project-case details{margin:9px 0;color:var(--muted);font-size:14px}
 .project-case details .mark-stage img{width:84px}
