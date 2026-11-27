@@ -370,13 +370,16 @@ function el(tag, value, className) {
 function button(label, action) {
   const b = el('button', label); b.type = 'button'; b.addEventListener('click', action); return b;
 }
-function download(label, filename, content, type) {
-  const a = el('a', label, 'download'); a.download = filename;
-  a.href = 'data:' + type + ';base64,' + btoa(Array.from(new TextEncoder().encode(content), b => String.fromCharCode(b)).join(''));
-  return a;
-}
 function jsonDownload(label, filename, data) {
-  return download(label, filename, JSON.stringify(data, null, 2), 'application/json');
+  return button(label, () => {
+    const file = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const link = el('a');
+    const url = URL.createObjectURL(file);
+    link.href = url;
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
 }
 function list(parent, title, values, empty) {
   parent.append(el('h3', title));
