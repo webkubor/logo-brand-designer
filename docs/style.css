@@ -95,3 +95,40 @@ input{min-height:41px;color:var(--ink);background:white;border:1px solid #d8d0dc
 .project-case.compact .case-links{margin-top:5px;justify-content:center;font-size:12px}
 @media(max-width:680px){.cards.wall{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:455px){.cards.wall{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px 28px;
+  padding-inline-start: 24px;
+  margin-block: 22px;
+}
+.workflow p {
+  color: var(--muted);
+  margin: 5px 0 0;
+}
+#journey .button {
+  margin: 0 8px 8px 0;
+}
+@media (max-width: 680px) {
+  .workflow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 455px) {
+  .workflow { grid-template-columns: 1fr; }
+}
+.review-example {
+  max-width: 880px;
+  margin: 18px 0 0;
+}
+.review-example img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.review-example figcaption {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
