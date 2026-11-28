@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="$csp">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logo 交互评审</title>
+<style>
+$style
+:root {
+  --paper:#f2f1eb; --ink:#1e2926; --dim:#52615a; --line:#d9ded6;
+  --panel:#fffefa; --soft:#e5eee7; --green:#224b3e; --accent:#386c58;
+  background:var(--paper); color:var(--ink);
+  font:15px/1.55 system-ui, "PingFang SC", sans-serif;
+}
+body {
+  min-height:100vh;
+  background:radial-gradient(ellipse at 92% 0%,#dcebe0 0%,transparent 44%),var(--paper);
+}
+main.studio {max-width:1200px;padding:48px 36px 32px}
+.studio-head {display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:30px}
+.studio-head h1 {font-size:clamp(36px,5vw,64px);letter-spacing:-.065em;line-height:1.04;margin:0}
+.studio-head p {color:var(--dim);margin:14px 0 0}
+.studio-head details {font-size:13px;color:var(--dim);max-width:20em}
+.studio-head summary,.studio-details summary {cursor:pointer}
+.project-tabs {display:flex;flex-wrap:wrap;gap:9px;padding-bottom:18px}
+.project-tabs button {
+  white-space:normal;display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:12px;background:#f9faf5;color:var(--ink);
+  padding:8px 15px 8px 9px;font-weight:650;text-align:left;max-width:100%;
+  transition:background .18s ease,border-color .18s ease;
+}
+.project-tabs button img {width:32px;height:32px;object-fit:contain;background:white;border-radius:8px}
+.project-tabs button[aria-selected="true"] {background:var(--soft);border-color:#79a18e;color:#173b31}
+.project-tabs button:hover {border-color:#79a18e}
+.studio-workspace {border:1px solid var(--line);border-radius:24px;background:var(--panel);box-shadow:0 15px 35px #263a2e0d}
+.studio-toolbar {display:flex;gap:12px 20px;justify-content:space-between;flex-wrap:wrap;padding:16px 22px;border-bottom:1px solid var(--line)}
+.studio-control {display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.studio-control span {color:var(--dim);font-size:13px;margin-right:5px}
+.studio-control button {border-radius:9px;border-color:var(--line);min-height:38px;padding:5px 11px;font-size:13px}
+.studio-control button[aria-pressed="true"] {background:var(--green);border-color:var(--green);color:white}
+.studio-project {border:0;margin:0;background:transparent;padding:23px 22px 20px}
+.studio-project h2 {font-size:clamp(25px,4vw,36px);letter-spacing:-.035em;line-height:1.2;margin:0 0 13px}
+.studio-project .preview-grid {gap:13px;margin:0 0 13px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.studio-project .preview-grid figure {display:flex;flex-direction:column-reverse;gap:9px}
+.studio-project .preview-grid figcaption {font-size:13px;font-weight:650;color:var(--dim);padding:0 3px;margin:0}
+.studio-project .preview-grid figure:last-child figcaption {color:var(--green)}
+.studio-project .canvas {
+  min-height:clamp(194px,26vw,298px);border-radius:17px;border-color:var(--line);
+  background:#f6f7f1;
+}
+.studio-project .canvas[data-bg="dark"] {background:#202725;border-color:#293431}
+.studio-project .canvas[data-bg="checker"] {background-color:#f9faf7;background-image:conic-gradient(#e7ece6 25%,transparent 0 50%,#e7ece6 0 75%,transparent 0);background-size:20px 20px}
+.studio-project .icon-canvas {min-height:75px;gap:20px}
+.studio-project .preview-grid > p {margin:24px 0}
+.studio-tab-stage {font-size:11px;font-weight:500;color:var(--dim);border-left:1px solid var(--line);padding-left:9px}
+.studio-progress {margin:0 0 18px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8faf5}
+.studio-progress-title {margin:0 0 8px;font-size:13px;color:var(--dim)}
+.studio-steps {display:flex;flex-wrap:wrap;gap:6px}
+.studio-steps button {padding:4px 9px;border-color:var(--line);border-radius:8px;font-size:12px}
+.studio-steps button[aria-pressed="true"] {background:var(--green);border-color:var(--green);color:white}
+.studio-steps button[aria-current="step"]::after {content:"";display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:#6da38b;vertical-align:1px}
+.studio-step-note {min-height:1.55em;margin:8px 0 0;color:var(--dim);font-size:13px}
+.studio-evidence {display:grid;justify-items:start;gap:10px;margin-top:12px}
+.studio-evidence img {max-width:100%;max-height:62vh;border-radius:10px;border:1px solid var(--line);object-fit:contain}
+.studio-rationale {color:var(--dim);margin:18px 3px}
+.studio-details {border-top:1px solid var(--line);margin:12px 0 0;padding:14px 3px 0}
+.studio-details > summary {color:var(--green);font-weight:650}
+.studio-footer {display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;color:var(--dim);font-size:13px}
+.studio-footer .actions {margin:0}
+.studio-footer .actions button {background:transparent;border-radius:9px;border-color:var(--line)}
+@media(max-width:650px) {
+  main.studio {padding:26px 14px 20px}
+  .studio-head {display:block;margin-bottom:20px}
+  .studio-head details {margin-top:10px}
+  .project-tabs {gap:6px;padding-bottom:12px}
+  .project-tabs button {padding:6px 8px;gap:5px;font-size:12px}
+  .project-tabs button img {width:24px;height:24px}
+  .studio-tab-stage {padding-left:5px;font-size:10px}
+  .studio-toolbar,.studio-project {padding:13px}
+  .studio-project .preview-grid {gap:7px}
+  .studio-project .canvas {min-height:155px;border-radius:12px}
+  .studio-project .canvas img {max-width:100%;max-height:100%}
+  .studio-project .icon-canvas {min-height:70px}
+}
+@media(prefers-reduced-motion:reduce) {.project-tabs button {transition:none}}
+</style>
+</head>
+<body>
+<main class="studio">
+<header class="studio-head">
+  <div><h1>Logo 交互评审</h1><p>切换项目，查看阶段记录和新旧方案。</p></div>
+  <details><summary>预览说明</summary><p>$limitation</p></details>
+</header>
+<nav class="project-tabs" id="project-tabs" role="tablist" aria-label="评审项目"></nav>
+<section class="studio-workspace" aria-label="标识对照">
+  <div class="studio-toolbar">
+    <div class="studio-control" role="group" aria-label="预览背景">
+      <span>背景</span><button type="button" data-background="light">浅底</button>
+      <button type="button" data-background="dark">深底</button><button type="button" data-background="checker">棋盘</button>
+    </div>
+    <div class="studio-control" role="group" aria-label="预览尺寸">
+      <span>尺寸</span><button type="button" data-size="24">24px</button><button type="button" data-size="32">32px</button>
+      <button type="button" data-size="64">64px</button><button type="button" data-size="128">128px</button>
+    </div>
+  </div>
+  <div id="projects"></div>
+  <noscript><p>启用 JavaScript 后即可切换项目和预览。</p></noscript>
+</section>
+<footer class="studio-footer"><span>素材已内嵌，可离线打开</span><div class="actions" id="downloads"></div></footer>
+</main>
+<script>$script</script>
+</body>
+</html>

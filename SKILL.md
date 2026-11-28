@@ -11,7 +11,7 @@ url: https://github.com/webkubor/logo-brand-designer
 
 # Logo 品牌设计师
 
-交付 **design token + 设计理念 + 完整 SVG**，保留独立评审 HTML、manifest、原始素材与真实截图。用户提供的 token、理念和已有 SVG 是首要设计输入。先理解和沿用；确需调整时解释具体原因，区分保留与新建议，不用个人审美覆盖用户要求。
+交付 **design token + 设计理念 + 完整 SVG**，保留 manifest、原始素材与实际渲染证据。评审网页和工作台由用户选择。用户提供的 token、理念和已有 SVG 是首要设计输入。先理解和沿用；确需调整时解释具体原因，区分保留与新建议，不用个人审美覆盖用户要求。
 
 本 skill 可独立使用，脚本与参考资料均相对本目录定位。一行委托、manifest 契约与截图证据格式见 [references/reuse.md](references/reuse.md)。
 
@@ -156,19 +156,32 @@ url: https://github.com/webkubor/logo-brand-designer
 </svg>
 ```
 
-## 保留独立评审页与截图
+## 可选评审服务
 
-先读 [references/reuse.md](references/reuse.md)，按 [manifest-example.json](references/manifest-example.json) 填入真实资料（示例素材需自行提供）。在任何项目里使用标准库脚本，Python 3.9+，无第三方依赖：
+按用户选择交付。用户说「只要结果」或未选择 UI 时，交付素材与检验记录。用户提出做交互页面时，直接生成，无需再次询问。
+
+接手时先确认用户要做的服务、评审方式和项目数量。项目范围能从对话或源码确定时直接开始；可跳过的设计服务由用户选择。
+
+- **品牌标识**：核对产品现用图与位置，探索黑白轮廓，确认形态后锁形做配色。再做应用验证，最后记录定稿、实际替换和发布。用证据说明每次取舍。
+- **应用设计**：读取项目设计规范，按 `ui-design` 协作。先做页面结构与布局，再梳理菜单、导航和关键界面交互，逐项定图标和动效。用可打开的原型、真实界面截图或动效预览说明变化。再检查实际宿主里的图标尺寸和动效降级。
+- **单个或批量**：一份清单可以只有一个项目，也可以收多款。每个项目有独立的当前阶段、证据、确认记录与下一步；同阶段可并行，选择和上线逐个确认。用户已确认的项目与尚未确认的项目可处在不同阶段。
+
+
+| 用户想要什么 | 选项 |
+| --- | --- |
+| 看最终结果 | 展示实际渲染的标识，交付 SVG、色值、理念、来源与检验记录。 |
+| 自己切项目、比新旧、看大小 | 选择**离线交互评审**。打开一个 HTML 文件，切换背景与尺寸、查阅设计记录、下载 SVG 或复制反馈。 |
+| 持续看进度、提交意见、分阶段确认 | 选择[本地 Logo 评审工作台](references/workbench.md)。用户选用后才启动本机服务。 |
+
+离线交互评审使用 [manifest 契约](references/reuse.md)：
 
 ```bash
-python3 "$SKILL_DIR/scripts/build_review.py" --manifest "$DELIVERY_DIR/manifest.json" --out "$DELIVERY_DIR/review.html"
+python3 "$SKILL_DIR/scripts/build_review.py" --manifest "$DELIVERY_DIR/manifest.json" --out "$DELIVERY_DIR/review.html" --layout studio
 ```
 
-`SKILL_DIR` 为当前实际 skill 目录。`projects` 支持首次设计无 `oldAsset`、可选 `darkAsset` 和 SVG/PNG/WebP；所有素材及本地来源路径相对 manifest 目录，禁止逃逸。HTML 内嵌素材，离线支持浅/深/棋盘和 32/64/128 切换、来源与理念、素材/JSON 下载及含实际 SVG 的完整任务复制。`userDecisions` 与 `recommendations` 分别记录已给定/确认与未确认建议。复制须检查结果，失败显示手动复制入口，不能宣称成功。
+用户核对「现在用的图标」时，从实际加载资源或发布包取证。只有核对过的素材可以标为现用；品牌母版、README 图片和候选均按各自身份记录。项目标签用用户认识的项目名，编号可附在详情中。评审页保存在交付目录。公开成果展示只收实际采用的定稿。
 
-脚本只做结构检查（含 SVG 正方形、title/aria、安全子集及引用）；生成成功不等于像素透明或视觉验收通过。真实截图另存交付目录 `screenshots/`，说明来源页面/渲染命令、素材版本、背景/尺寸与实际测试范围，保留 HTML、manifest 和素材。未截图、未测像素或工具失败如实写明，不拿已有图当截图。
-
-用户需要实时看进度、在页面选择方案或保存分阶段决定时，使用[本地 Logo 评审工作台](references/workbench.md)。Agent 更新进度并提供候选，品牌方分阶段确认。
+可给每个项目填 `reviewProgress`，用 `brand` 或 `app` 的阶段，按需选择要做的环节。页面只显示实际记录，不根据候选图片推断完成或批准。Python 3.9+ 标准库即可生成单文件页面。原有文档式 HTML 仍可生成，省略 `--layout studio` 即可。生成器做结构检查，像素和实际宿主需单独检查；选择交互评审时，打开实际生成页并核对项目切换、深浅底、尺寸与下载，再从浏览器保存截图。
 
 ## 派生应用图标：对比度要按真实相邻面测
 
@@ -204,7 +217,7 @@ python3 "$SKILL_DIR/scripts/build_review.py" --manifest "$DELIVERY_DIR/manifest.
 
 主体比例、留白和最小尺寸按当前项目已授权规范验收；没有既有规范时说明本次选择的依据，不把某次设计的数值当成所有品牌的固定要求。
 
-交付给出 token 的 hex 与证据、理念、完整 SVG/路径、主题用法、独立 HTML/manifest、`screenshots/` 的真实来源、命令结果及未验收项。正式接入产品、提交、推送或发布按当前任务授权执行，区分本地完成、入口接入与远端发布。
+交付给出 token 的 hex 与证据、理念、完整 SVG/路径、主题用法、manifest、所选的评审页面、`screenshots/` 的真实来源、命令结果及未验收项。正式接入产品、提交、推送或发布按当前任务授权执行，区分本地完成、入口接入与远端发布。
 
 ## 定稿后的素材归集
 

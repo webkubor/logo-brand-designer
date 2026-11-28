@@ -43,12 +43,15 @@ class ReviewCliTests(unittest.TestCase):
             "asset": "mark.svg",
         }
 
-    def generate(self, output=None):
+    def generate(self, output=None, layout=None):
         self.manifest.write_text(json.dumps({"projects": [self.project]}), encoding="utf-8")
         # The working directory differs from both the skill and manifest directories.
+        args = [sys.executable, str(SCRIPT), "--manifest", str(self.manifest),
+                "--out", str(output or self.output)]
+        if layout:
+            args.extend(["--layout", layout])
         return subprocess.run(
-            [sys.executable, str(SCRIPT), "--manifest", str(self.manifest),
-             "--out", str(output or self.output)],
+            args,
             cwd=self.root, capture_output=True, text=True, encoding="utf-8", timeout=20,
         )
 
@@ -57,6 +60,46 @@ class ReviewCliTests(unittest.TestCase):
         script = re.search(r"<script>(.*?)</script>", page, re.S).group(1)
         data = json.JSONDecoder().raw_decode(script.split("const DATA = ", 1)[1])[0]
         return page, script, data
+
+    def test_studio_is_optional_and_embeds_current_artwork(self):
+        self.project.update(oldAsset="mark.svg", oldAssetLabel="产品现用图标")
+        result = self.generate(layout="studio")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        page, script, data = self.bundle()
+        self.assertIn('id="project-tabs" role="tablist"', page)
+        self.assertIn('data-size="24"', page)
+        record = data["projects"][0]
+        self.assertEqual(record["oldAssetLabel"], "产品现用图标")
+        self.assertEqual(record["assets"]["oldAsset"]["dataUri"], record["assets"]["asset"]["dataUri"])
+        digest = base64.b64encode(hashlib.sha256(script.encode()).digest()).decode()
+        self.assertIn("sha256-" + digest, html.unescape(page))
+        self.assertNotIn('script src=', page)
+        result = self.generate()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('id="project-tabs"', self.output.read_text())
+
+    def test_app_studio_allows_selected_stages_without_logo(self):
+        self.project.pop("asset")
+        self.project.pop("tokens")
+        self.project["reviewProgress"] = {
+            "workflow": "app",
+            "include": ["layout", "menu"],
+            "current": "menu",
+            "notes": {"layout": "布局已记录。"},
+            "evidence": {"menu": {"prototype": "http://127.0.0.1:4173/"}},
+        }
+        result = self.generate(layout="studio")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        _, _, data = self.bundle()
+        record = data["projects"][0]
+        self.assertIsNone(record["assets"]["asset"])
+        self.assertEqual([stage["id"] for stage in record["reviewProgress"]["stages"]], ["layout", "menu"])
+        self.assertEqual(record["reviewProgress"]["stages"][1]["prototype"], "http://127.0.0.1:4173/")
+        result = self.generate()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.project["reviewProgress"]["current"] = "motion"
+        result = self.generate(layout="studio")
+        self.assertEqual(result.returncode, 1, result.stderr)
 
     def test_first_design_without_old_or_dark_assets(self):
         self.project.update({
