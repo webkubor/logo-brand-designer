@@ -33,7 +33,7 @@ npx skills add webkubor/logo-brand-designer
 
 [![Godbot 标识候选与文字反馈输入框](examples/godbot-experiment/screenshots/review.png)](examples/godbot-experiment/README.md)
 
-## 已用在产品里的标识
+## 品牌标识作品墙
 
 <!-- logo-wall:start -->
 <table>

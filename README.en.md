@@ -33,7 +33,7 @@ This browser screenshot comes from the archived Godbot design exercise. The case
 
 [![Godbot logo concepts and written feedback form](examples/godbot-experiment/screenshots/review.png)](examples/godbot-experiment/README.md)
 
-## Shipped work
+## Brand mark gallery
 
 <!-- logo-wall:start -->
 <table>
