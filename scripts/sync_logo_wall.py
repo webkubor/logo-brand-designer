@@ -5,12 +5,12 @@ from html import escape
 import json
 from pathlib import Path
 import subprocess
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 START = "<!-- logo-wall:start -->"
 END = "<!-- logo-wall:end -->"
-FEATURED = ("nativecrew", "xianling-music", "chat-mood-gen", "wallpaper-generator")
+PROJECTS = ROOT / "references/current-logo-projects.json"
 
 
 def git(checkout, *args):
@@ -20,35 +20,41 @@ def git(checkout, *args):
 def load_marks(checkout):
     revision = git(checkout, "rev-parse", "origin/main")
     files = set(git(checkout, "ls-tree", "-r", "--name-only", revision).splitlines())
-    records = [
-        json.loads(git(checkout, "show", f"{revision}:{name}"))
-        for name in sorted(files)
-        if name.startswith("brand/") and name.endswith(".json")
-    ]
-    records.sort(key=lambda row: FEATURED.index(row["id"]) if row["id"] in FEATURED else len(FEATURED))
-    marks = {}
-    for record in records:
-        if record["status"] != "ready":
-            continue
-        asset = record["asset"]
+    projects = json.loads(PROJECTS.read_text(encoding="utf-8"))
+    marks = []
+    urls = set()
+    for project_id, project in projects.items():
+        manifest_path = f"brand/{project_id}.json"
+        details = json.loads(git(checkout, "show", f"{revision}:{manifest_path}"))
+        if details["status"] != "ready":
+            raise ValueError(f"{project_id}: no longer marked ready in free-imgbed")
+        asset = project["asset"]
         if asset not in files:
             raise ValueError(f"Missing published logo: {asset}")
-        marks.setdefault(asset, record)
+        url = urlsplit(project["url"])
+        if url.scheme != "https" or not url.hostname or url.username or url.password:
+            raise ValueError(f"{project_id}: expected a public HTTPS project URL")
+        if project["url"].rstrip("/") in urls:
+            raise ValueError(f"{project_id}: duplicate project URL")
+        urls.add(project["url"].rstrip("/"))
+        marks.append({"id": project_id, "name": project.get("name", details["name"]),
+                      "asset": asset, "url": project["url"]})
     if not marks:
-        raise ValueError("No ready logos found")
-    return list(marks.values()), revision
+        raise ValueError("No verified projects found")
+    return marks, revision
 
 
 def tile(mark, revision, website):
     name = escape(mark["name"], quote=True)
-    url = "https://github.com/" + quote(mark["sourceRepo"])
+    url = escape(mark["url"], quote=True)
     base = f"https://cdn.jsdelivr.net/gh/webkubor/free-imgbed@{revision}/"
     asset = base + quote(mark["asset"])
     if website:
         tone = " logo-tile--dark" if mark["id"] == "wallpaper-generator" else ""
         return (
             f'    <a class="logo-tile{tone}" href="{url}" title="{name}" data-case="{name}">'
-            f'<img src="{asset}" width="120" height="120" loading="lazy" alt="{name}"></a>'
+            f'<span class="logo-tile-mark"><img src="{asset}" width="120" height="120" loading="lazy" alt=""></span>'
+            f'<span class="logo-tile-name">{name}</span></a>'
         )
     image = f'<img src="{asset}" width="80" height="80" alt="{name}">'
     return f'<td align="center"><a href="{url}">{image}</a></td>'

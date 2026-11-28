@@ -87,26 +87,35 @@ input{min-height:41px;color:var(--ink);background:white;border:1px solid #d8d0dc
 /* 产品标识墙 */
 .logo-wall {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 126px), 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
 }
 .logo-tile {
   display: grid;
-  place-items: center;
-  aspect-ratio: 1;
+  grid-template-rows: 1fr auto;
+  min-width: 0;
+  text-align: center;
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--paper);
 }
 .logo-tile[hidden] { display: none; }
 .logo-tile:hover { border-color: var(--accent); }
-.logo-tile--dark { background: #2b2a27; }
+.logo-tile-mark { display: grid; place-items: center; aspect-ratio: 1; }
+.logo-tile--dark .logo-tile-mark { background: #2b2a27; }
+.logo-tile-name { padding: 7px; font-size: 13px; overflow-wrap: anywhere; }
 .logo-tile img {
   display: block;
   width: min(68%, 106px);
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
+}
+@media (max-width: 800px) {
+  .logo-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (max-width: 455px) {
   .logo-wall { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }

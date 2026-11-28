@@ -1,0 +1,69 @@
+{
+  "kyvault": {
+    "asset": "kyvault/app-preview.png",
+    "url": "https://webkubor.github.io/kyvault/",
+    "source": "与本机 Ky 0.3.8 安装包 256px 图标逐像素一致"
+  },
+  "nativecrew": {
+    "asset": "nativecrew/logo.svg",
+    "url": "https://github.com/webkubor/nativecrew",
+    "source": "项目 icon.svg，图床只调整画布留白"
+  },
+  "xianling-music": {
+    "asset": "xianling-music/logo-light.svg",
+    "name": "仙灵music",
+    "url": "https://music.museav.top/",
+    "source": "官网 xianling-music-light.svg，图床只调整画布留白"
+  },
+  "chat-mood-gen": {
+    "asset": "chat-mood-gen/mark-v4.svg",
+    "url": "https://wechat.webkubor.online/",
+    "source": "官网 /logo.svg 与图床文件一致"
+  },
+  "wallpaper-generator": {
+    "asset": "wallpaper-generator/mark-v4.svg",
+    "name": "氛围壁纸工坊",
+    "url": "https://wallpaper.webkubor.online/",
+    "source": "官网 /brand-mark.svg 与图床文件一致"
+  },
+  "claude-usage-statusline": {
+    "asset": "claude-usage-statusline/mark-v3.svg",
+    "url": "https://github.com/webkubor/claude-usage-statusline",
+    "source": "项目 README 首图引用同一图床素材"
+  },
+  "facet": {
+    "asset": "facet/mark-v3.svg",
+    "url": "https://github.com/webkubor/facet",
+    "source": "项目 README 首图引用同一图床素材"
+  },
+  "fovea": {
+    "asset": "fovea/logo.svg",
+    "url": "https://github.com/webkubor/fovea",
+    "source": "正式品牌文件 brand/assets/mark.svg，图床只调整画布留白"
+  },
+  "free-imgbed": {
+    "asset": "free-imgbed/mark-v3.svg",
+    "url": "https://github.com/webkubor/free-imgbed",
+    "source": "项目 README 首图引用同一图床素材"
+  },
+  "harnessweight": {
+    "asset": "harnessweight/logo.svg",
+    "url": "https://github.com/webkubor/harnessweight",
+    "source": "项目 README 使用 brand/assets/lens.svg，与图床标识同形"
+  },
+  "supercli": {
+    "asset": "supercli/mark-v3.svg",
+    "url": "https://github.com/supercli-site/supercli",
+    "source": "项目 README 首图引用同一图床素材"
+  },
+  "vite-plugin-agent-eyes": {
+    "asset": "vite-plugin-agent-eyes/mark-v3.svg",
+    "url": "https://github.com/webkubor/vite-plugin-agent-eyes",
+    "source": "项目 README 首图引用同一图床素材"
+  },
+  "xiaobai-kanban": {
+    "asset": "xiaobai-kanban/logo.svg",
+    "url": "https://xiaobai.supercli.site/",
+    "source": "官网 /favicon.svg，图床只调整画布留白"
+  }
+}
